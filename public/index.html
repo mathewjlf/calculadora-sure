@@ -660,6 +660,13 @@
 
             <div id="results" class="results"></div>
             <div id="summary" class="summary-grid"></div>
+
+            <!-- export/import controls for tab1 (ADICIONADO MINIMAMENTE) -->
+            <div class="state-controls" style="margin-top:14px;">
+              <input id="state-input-tab1" type="text" placeholder="Clique em 'Gerar Código' para obter o hash...">
+              <button id="export-tab1" class="ghost" title="Gerar código (copia automaticamente)">🔑 Gerar Código</button>
+              <button id="import-tab1" title="Aplicar Código">📥 Aplicar Código</button>
+            </div>
           </div>
         </div>
       </div>
@@ -708,19 +715,11 @@
                 />
               </div>
 
-              <div class="surebet-input" style="min-width: 220px">
-                <div style="display: flex; align-items: center; gap: 10px">
+              <!-- checkbox alinhado e em linha com o texto -->
+              <div class="surebet-input" style="min-width:220px;">
+                <div style="display:flex; align-items:center; gap:10px;">
                   <input id="surebet-free" type="checkbox" />
-                  <label
-                    for="surebet-free"
-                    style="
-                      font-size: medium;
-                      margin: 0;
-                      color: var(--muted);
-                      font-weight: 600;
-                    "
-                    >Freebet</label
-                  >
+                  <label for="surebet-free" style="margin:0; color:var(--muted); font-weight:600;">Freebet</label>
                   <span class="small">aposta não é devolvida</span>
                 </div>
               </div>
@@ -753,27 +752,15 @@
               </div>
             </div>
 
-            <div class="surebet-results-grid" style="margin-top: 12px">
+            <div class="surebet-results-grid" style="margin-top:12px;">
               <div class="surebet-result-box">
                 <div class="surebet-result-label">Aposta Contra (Lay)</div>
-                <div
-                  id="surebet-stakeLay"
-                  class="surebet-result-value profit-neutral"
-                >
-                  100.00
-                </div>
+                <div id="surebet-stakeLay" class="surebet-result-value profit-neutral">100.00</div>
               </div>
               <div class="surebet-result-box">
-                <div class="surebet-result-label">
-                  Saldo necessário (Responsabilidade)
-                </div>
+                <div class="surebet-result-label">Saldo necessário (Responsabilidade)</div>
                 <div class="with-copy">
-                  <div
-                    id="surebet-resultResponsabilidade"
-                    class="surebet-result-value profit-neutral"
-                  >
-                    100.00
-                  </div>
+                  <div id="surebet-resultResponsabilidade" class="surebet-result-value profit-neutral">100.00</div>
                   <button class="copy-btn" title="Copiar valor">📋</button>
                 </div>
               </div>
@@ -785,23 +772,25 @@
             <div class="surebet-results-grid">
               <div class="surebet-result-box">
                 <div class="surebet-result-label">Casa</div>
-                <div
-                  id="surebet-lucroCasa"
-                  class="surebet-result-value profit-neutral"
-                >
-                  0.00
-                </div>
+                <div id="surebet-lucroCasa" class="surebet-result-value profit-neutral">0.00</div>
               </div>
               <div class="surebet-result-box">
                 <div class="surebet-result-label">Exchange</div>
-                <div
-                  id="surebet-lucroExchange"
-                  class="surebet-result-value profit-neutral"
-                >
-                  -2.80
-                </div>
+                <div id="surebet-lucroExchange" class="surebet-result-value profit-neutral">-2.80</div>
               </div>
             </div>
+          </div>
+
+          <div class="surebet-explanation">
+            <div style="font-weight:700; color:var(--accent-light); margin-bottom:6px;">Como usar</div>
+            <div class="small">Alocação simplificada em "equilíbrio". Se quiser outro comportamento (priorizar casa ou exchange), me fale que eu ajusto.</div>
+          </div>
+
+          <!-- export/import controls for tab2 (ADICIONADO MINIMAMENTE) -->
+          <div class="state-controls" style="margin-top:12px;">
+            <input id="state-input-tab2" type="text" placeholder="Cole aqui o hash e clique em 'Aplicar Código'..." >
+            <button id="export-tab2" class="ghost" title="Gerar código (copia automaticamente)">🔑 Gerar Código</button>
+            <button id="import-tab2" title="Aplicar Código">📥 Aplicar Código</button>
           </div>
         </div>
       </div>
@@ -970,10 +959,6 @@
       const autoCalcCheckbox = document.getElementById("auto-calc");
       const captureResultsBtn = document.getElementById("capture-results");
       const screenshotOverlay = document.getElementById("screenshot-overlay");
-      const closeScreenshot = document.getElementById("close-screenshot");
-      const copyScreenshot = document.getElementById("copy-screenshot");
-      const saveScreenshot = document.getElementById("save-screenshot");
-      const captureArea = document.getElementById("capture-area");
 
       function init() {
         tbody.innerHTML = "";
@@ -984,21 +969,16 @@
         if (screenshotOverlay) screenshotOverlay.style.display = "none";
         window.screenshotCanvas = null;
 
-        // Delegar evento para botões de cópia
+        // Delegar evento para botões de cópia nas linhas (não mexi no layout)
         tbody.addEventListener("click", function (e) {
-          if (
-            e.target.classList.contains("copy-btn") ||
-            e.target.closest(".copy-btn")
-          ) {
-            const btn = e.target.classList.contains("copy-btn")
-              ? e.target
-              : e.target.closest(".copy-btn");
-            const stakeInput = btn
-              .closest(".stake-container")
-              ?.querySelector(".stake");
+          const btn = e.target.closest(".copy-btn");
+          if (btn) {
+            const stakeInput = btn.closest(".stake-container")?.querySelector(".stake");
             if (stakeInput) {
-              copyToClipboard(stakeInput.value);
-              showCopyFeedback(btn);
+              navigator.clipboard?.writeText?.(stakeInput.value).then(()=>{
+                showToast('Stake copiada');
+                showCopyFeedback(btn);
+              }).catch(()=> showToast('Não foi possível copiar'));
             }
           }
         });
@@ -1083,8 +1063,7 @@
         function updateBackConversion() {
           const layVal = parseFloat(oddInput.value) || 0;
           if (typeSel.value === "lay" && layVal > 1)
-            backConversion.textContent =
-              "Back: " + layToBack(layVal).toFixed(3);
+            backConversion.textContent = "Back: " + layToBack(layVal).toFixed(3);
           else backConversion.textContent = "";
         }
 
@@ -1467,7 +1446,7 @@
 
       /* ===== Captura / screenshot (ambas abas) ===== */
       async function captureResults() {
-        const target = captureArea;
+        const target = document.getElementById("capture-area");
         if (!target) {
           alert("Área de captura não encontrada");
           return;
@@ -1590,12 +1569,16 @@
       const captureSurebetBtn = document.getElementById("capture-surebet");
       if (captureSurebetBtn)
         captureSurebetBtn.addEventListener("click", captureSurebet);
-      closeScreenshot.addEventListener(
+      document.getElementById("close-screenshot").addEventListener(
         "click",
         () => (screenshotOverlay.style.display = "none")
       );
-      copyScreenshot.addEventListener("click", copyScreenshotToClipboard);
-      saveScreenshot.addEventListener("click", saveScreenshotToFile);
+      document
+        .getElementById("copy-screenshot")
+        .addEventListener("click", copyScreenshotToClipboard);
+      document
+        .getElementById("save-screenshot")
+        .addEventListener("click", saveScreenshotToFile);
 
       init();
 
@@ -1657,11 +1640,7 @@
             : "profit-neutral");
         elEx.className =
           "surebet-result-value " +
-          (lucroExchange > 0
-            ? "profit-positive"
-            : lucroExchange < 0
-            ? "profit-negative"
-            : "profit-neutral");
+          (lucroExchange > 0 ? "profit-positive" : lucroExchange < 0 ? "profit-negative" : "profit-neutral");
       }
 
       // listeners para inputs da aba2
@@ -1690,210 +1669,219 @@
       // inicializa aba2
       calcularSurebet();
 
-      /* ======= NOVO: serialização / deserialização via Base64 na URL (hash) =======
-         - Mantive formato simples e compatível com JSON + base64 (sem compressão).
-         - Ao abrir a página, se existir "#hash=...", tentamos decodificar e aplicar.
-         - Funções: encodeStateToHash(obj) / decodeStateFromHash(str)
-      ============================================================================*/
+      /* ====== STATE EXPORT / IMPORT (por aba) ====== */
 
-      function encodeStateToHash(obj) {
-        try {
-          const json = JSON.stringify(obj);
-          // UTF-8 safe base64
-          const utf8 = encodeURIComponent(json);
-          return btoa(utf8);
-        } catch (e) {
-          console.error("encodeStateToHash error", e);
-          return null;
+      // Revertido para BASE64 simples (sem compressão LZ)
+      const LZString = {
+        compressToBase64: function(input){
+          if (input == null) return "";
+          // encodeURIComponent -> btoa for unicode safety
+          try {
+            const utf8 = encodeURIComponent(input);
+            return btoa(utf8);
+          } catch(e) {
+            try { return btoa(input); } catch(e2) { return ""; }
+          }
+        },
+        decompressFromBase64: function(b64){
+          if (!b64) return null;
+          try {
+            const utf8 = atob(b64);
+            return decodeURIComponent(utf8);
+          } catch(e) {
+            try { return atob(b64); } catch(e2) { return null; }
+          }
         }
-      }
+      };
 
-      function decodeStateFromHash(s) {
-        try {
-          if (!s) return null;
-          const utf8 = atob(s);
-          const json = decodeURIComponent(utf8);
-          return JSON.parse(json);
-        } catch (e) {
-          console.warn("decodeStateFromHash failed", e);
-          return null;
-        }
-      }
-
-      function collectFullState() {
-        // Collect tab1 rows
-        const rows = Array.from(tbody.children).map((tr) => {
+      // collect only tab1 state
+      function collectTab1State(){
+        const rows = Array.from(tbody.children).map(tr=>{
           return {
-            type: tr.querySelector(".type").value,
-            odd: tr.querySelector(".odd").value,
-            stake: tr.querySelector(".stake").value,
-            stakeType: tr.querySelector(".stake-type")
-              ? tr.querySelector(".stake-type").value
-              : "liability",
-            comm: tr.querySelector(".comm").value,
-            cb: tr.querySelector(".cb").value,
-            locked: tr.querySelector(".lock").checked,
-            isSource: tr.querySelector(".is-source").checked,
+            type: tr.querySelector('.type').value,
+            odd: tr.querySelector('.odd').value,
+            stake: tr.querySelector('.stake').value,
+            stakeType: tr.querySelector('.stake-type') ? tr.querySelector('.stake-type').value : 'liability',
+            comm: tr.querySelector('.comm').value,
+            cb: tr.querySelector('.cb').value,
+            locked: tr.querySelector('.lock').checked,
+            isSource: tr.querySelector('.is-source').checked
           };
         });
-
-        return {
-          v: 1,
-          ts: Date.now(),
-          tab1: {
-            conv: convInput.value,
-            cbType: cbType.value,
-            autoCalc: autoCalcCheckbox.checked,
-            rows: rows,
-          },
-          tab2: {
-            oddBack: document.getElementById("surebet-oddBack").value,
-            stakeBack: document.getElementById("surebet-stakeBack").value,
-            oddlay: document.getElementById("surebet-oddlay").value,
-            comissao: document.getElementById("surebet-comissao").value,
-            isFree: document.getElementById("surebet-free").checked,
-          },
-        };
+        return { v:1, ts: Date.now(), tab1: { conv: convInput.value, cbType: cbType.value, autoCalc: autoCalcCheckbox.checked, rows } };
       }
 
-      function applyTab1State(objTab1) {
-        if (!objTab1) {
-          showToast("Código não contém estado da Aba 1");
-          return;
-        }
-        try {
-          convInput.value = objTab1.conv ?? convInput.value;
-          cbType.value = objTab1.cbType ?? cbType.value;
-          autoCalcCheckbox.checked = !!objTab1.autoCalc;
+      // collect only tab2 state
+      function collectTab2State(){
+        return { v:1, ts: Date.now(), tab2: {
+          oddBack: document.getElementById('surebet-oddBack').value,
+          stakeBack: document.getElementById('surebet-stakeBack').value,
+          oddlay: document.getElementById('surebet-oddlay').value,
+          comissao: document.getElementById('surebet-comissao').value,
+          isFree: document.getElementById('surebet-free').checked
+        } };
+      }
 
+      function importStateFromString(str){
+        try{
+          const json = LZString.decompressFromBase64(str);
+          if(json===null || json===undefined) throw new Error('Decompress returned null');
+          const obj = JSON.parse(json);
+          return obj;
+        }catch(e){
+          console.error('Erro ao importar state', e);
+          return null;
+        }
+      }
+
+      function exportObjToString(obj){
+        const json = JSON.stringify(obj);
+        return LZString.compressToBase64(json);
+      }
+
+      function applyTab1State(objTab1){
+        if(!objTab1) { showToast('Código não contém estado da Aba 1'); return; }
+        try{
+          convInput.value = objTab1.conv;
+          cbType.value = objTab1.cbType;
+          autoCalcCheckbox.checked = !!objTab1.autoCalc;
           // rebuild rows
-          tbody.innerHTML = "";
-          if (Array.isArray(objTab1.rows) && objTab1.rows.length > 0) {
-            objTab1.rows.forEach((r) => {
-              addRow(
-                r.type || "back",
-                r.odd !== undefined ? r.odd : "",
-                r.stake !== undefined ? r.stake : "",
-                r.stakeType || "liability",
-                r.comm !== undefined ? r.comm : "",
-                r.cb !== undefined ? r.cb : "",
-                !!r.isSource,
-                !!r.locked
-              );
+          tbody.innerHTML = '';
+          if(Array.isArray(objTab1.rows) && objTab1.rows.length>0){
+            objTab1.rows.forEach(r=>{
+              addRow(r.type||'back', r.odd!==undefined? r.odd : '', r.stake!==undefined? r.stake : '', r.stakeType||'liability', r.comm!==undefined? r.comm : '', r.cb!==undefined? r.cb : '', !!r.isSource, !!r.locked);
             });
           } else {
-            addRow("back", "", "", "liability", "", "", true, false);
-            addRow("back", "", "", "liability", "", "", false, false);
+            addRow('back','','','liability','','',true,false);
+            addRow('back','','','liability','','',false,false);
           }
           refreshIndex();
           updateHighlightedRows();
-          try {
-            compute();
-          } catch (e) {
-            console.warn("compute failed after applyTab1", e);
-          }
-          showToast("Aba 1 aplicada via hash");
-        } catch (e) {
-          console.error("Erro ao aplicar Aba1", e);
-          showToast("Erro aplicando Aba 1");
+          try{ compute(); } catch(e){ console.warn('compute failed after applyTab1', e); }
+          showToast('Aba 1 aplicada');
+        }catch(e){
+          console.error('Erro ao aplicar Aba1', e);
+          showToast('Erro aplicando Aba 1');
         }
       }
 
-      function applyTab2State(objTab2) {
-        if (!objTab2) {
-          showToast("Código não contém estado da Aba 2");
-          return;
-        }
-        try {
-          document.getElementById("surebet-oddBack").value =
-            objTab2.oddBack ?? document.getElementById("surebet-oddBack").value;
-          document.getElementById("surebet-stakeBack").value =
-            objTab2.stakeBack ??
-            document.getElementById("surebet-stakeBack").value;
-          document.getElementById("surebet-oddlay").value =
-            objTab2.oddlay ?? document.getElementById("surebet-oddlay").value;
-          document.getElementById("surebet-comissao").value =
-            objTab2.comissao ??
-            document.getElementById("surebet-comissao").value;
-          document.getElementById("surebet-free").checked = !!objTab2.isFree;
-          try {
-            calcularSurebet();
-          } catch (e) {
-            console.warn("calcularSurebet failed after applyTab2", e);
-          }
-          showToast("Aba 2 aplicada via hash");
-        } catch (e) {
-          console.error("Erro ao aplicar Aba2", e);
-          showToast("Erro aplicando Aba 2");
+      function applyTab2State(objTab2){
+        if(!objTab2) { showToast('Código não contém estado da Aba 2'); return; }
+        try{
+          document.getElementById('surebet-oddBack').value = objTab2.oddBack || '2.00';
+          document.getElementById('surebet-stakeBack').value = objTab2.stakeBack || '100.00';
+          document.getElementById('surebet-oddlay').value = objTab2.oddlay || '2.00';
+          document.getElementById('surebet-comissao').value = objTab2.comissao || '2.8';
+          document.getElementById('surebet-free').checked = !!objTab2.isFree;
+          try{ calcularSurebet(); } catch(e){ console.warn('calcularSurebet failed after applyTab2', e); }
+          showToast('Aba 2 aplicada');
+        }catch(e){
+          console.error('Erro ao aplicar Aba2', e);
+          showToast('Erro aplicando Aba 2');
         }
       }
 
-      function applyFullState(obj) {
-        if (!obj) {
-          showToast("Código inválido ou corrompido");
-          return;
-        }
-        // support older / different shapes
-        if (obj.tab1 || obj.tab2) {
-          if (obj.tab1) applyTab1State(obj.tab1);
-          if (obj.tab2) applyTab2State(obj.tab2);
-          return;
-        }
-        // Maybe user encoded directly {tab1:..., tab2:...} or full state:
-        if (obj.tab1 && obj.tab2) {
-          applyTab1State(obj.tab1);
-          applyTab2State(obj.tab2);
-          return;
-        }
-        // fallback: if object itself looks like tab1 or tab2
-        if (obj.conv !== undefined || obj.rows !== undefined) {
-          applyTab1State(obj);
-        }
-        if (obj.oddBack !== undefined || obj.stakeBack !== undefined) {
-          applyTab2State(obj);
-        }
-      }
+      // Tab1 UI hooks
+      const exportTab1Btn = document.getElementById('export-tab1');
+      const importTab1Btn = document.getElementById('import-tab1');
+      const stateInputTab1 = document.getElementById('state-input-tab1');
 
-      // Parse URL hash like "#hash=BASE64ENCODED"
-      function applyHashFromUrl() {
-        try {
-          const raw = location.hash ? location.hash.slice(1) : "";
-          if (!raw) return false;
-          const params = new URLSearchParams(raw);
-          const hash = params.get("hash");
-          if (!hash) return false;
-          const obj = decodeStateFromHash(hash);
-          if (!obj) {
-            showToast("Hash inválido ou corrompido");
-            return false;
-          }
-          applyFullState(obj);
-          return true;
-        } catch (e) {
-          console.error("applyHashFromUrl error", e);
-          return false;
+      exportTab1Btn.addEventListener('click', ()=>{
+        try{
+          const obj = collectTab1State();
+          const s = exportObjToString(obj);
+          stateInputTab1.value = s;
+          navigator.clipboard?.writeText?.(s).then(()=> showToast('Código Aba1 gerado e copiado')).catch(()=> showToast('Código Aba1 gerado (copiar manualmente)'));
+        }catch(e){
+          console.error(e);
+          showToast('Erro ao gerar código Aba1');
         }
-      }
-
-      // Apply on load (if hash provided)
-      window.addEventListener("load", () => {
-        // small delay to make sure DOM initialized
-        setTimeout(() => {
-          const ok = applyHashFromUrl();
-          if (ok) {
-            // optional: if you want, switch to tab1 after apply
-            // document.querySelector('.tab-button[data-tab="tab1"]').click();
-          }
-        }, 60);
       });
 
-      // OPTIONAL helper: expose functions for debug from console:
-      window._appStateHelpers = {
-        collectFullState,
-        encodeStateToHash,
-        decodeStateFromHash,
-        applyFullState,
-      };
+      importTab1Btn.addEventListener('click', async ()=>{
+        let s = stateInputTab1.value.trim();
+        if(!s){
+          // tenta ler do clipboard (user-initiated click => deve funcionar se permitido)
+          if(navigator.clipboard && navigator.clipboard.readText){
+            try{
+              s = await navigator.clipboard.readText();
+              if(!s || !s.trim()){ showToast('Área de transferência vazia'); return; }
+              stateInputTab1.value = s;
+              showToast('Conteúdo do clipboard colado automaticamente');
+            }catch(e){
+              console.error('Erro lendo clipboard', e);
+              showToast('Não foi possível ler o clipboard. Cole manualmente.');
+              return;
+            }
+          } else {
+            showToast('API do clipboard não disponível — cole manualmente');
+            return;
+          }
+        }
+        const obj = importStateFromString(s);
+        if(!obj){ showToast('Código inválido ou corrompido'); return; }
+        if(obj.tab1) applyTab1State(obj.tab1);
+        else if(obj.tab2 && !obj.tab1){
+          showToast('Código contém apenas Aba 2 — nada aplicado em Aba 1');
+        } else {
+          if(obj.tab1) applyTab1State(obj.tab1);
+          else showToast('Código não contém dados da Aba 1');
+        }
+      });
+
+      // Tab2 UI hooks
+      const exportTab2Btn = document.getElementById('export-tab2');
+      const importTab2Btn = document.getElementById('import-tab2');
+      const stateInputTab2 = document.getElementById('state-input-tab2');
+
+      exportTab2Btn.addEventListener('click', ()=>{
+        try{
+          const obj = collectTab2State();
+          const s = exportObjToString(obj);
+          stateInputTab2.value = s;
+          navigator.clipboard?.writeText?.(s).then(()=> showToast('Código Aba2 gerado e copiado')).catch(()=> showToast('Código Aba2 gerado (copiar manualmente)'));
+        }catch(e){
+          console.error(e);
+          showToast('Erro ao gerar código Aba2');
+        }
+      });
+
+      importTab2Btn.addEventListener('click', async ()=>{
+        let s = stateInputTab2.value.trim();
+        if(!s){
+          if(navigator.clipboard && navigator.clipboard.readText){
+            try{ s = await navigator.clipboard.readText(); if(!s || !s.trim()){ showToast('Área de transferência vazia'); return; } stateInputTab2.value = s; showToast('Conteúdo do clipboard colado automaticamente'); } catch(e){ console.error('Erro lendo clipboard', e); showToast('Não foi possível ler o clipboard. Cole manualmente.'); return; }
+          } else { showToast('API do clipboard não disponível — cole manualmente'); return; }
+        }
+        const obj = importStateFromString(s);
+        if(!obj){ showToast('Código inválido ou corrompido'); return; }
+        if(obj.tab2) applyTab2State(obj.tab2);
+        else if(obj.tab1 && !obj.tab2){
+          showToast('Código contém apenas Aba 1 — nada aplicado em Aba 2');
+        } else {
+          if(obj.tab2) applyTab2State(obj.tab2);
+          else showToast('Código não contém dados da Aba 2');
+        }
+      });
+
+      // convenience: Ctrl/Cmd+Enter to apply from input
+      [stateInputTab1, stateInputTab2].forEach(inp=>{
+        if(!inp) return;
+        inp.addEventListener('keydown', (ev)=>{
+          if(ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)){
+            if(inp.id === 'state-input-tab1') importTab1Btn.click();
+            else if(inp.id === 'state-input-tab2') importTab2Btn.click();
+          }
+        });
+      });
+
+      /* ---------- small copy-feedback helper ---------- */
+      function showCopyFeedback(btn){
+        const original = btn.innerHTML;
+        btn.innerHTML = '✓';
+        btn.classList.add('copy-success');
+        setTimeout(()=>{ btn.innerHTML = original; btn.classList.remove('copy-success'); }, 900);
+      }
     </script>
   </body>
 </html>
