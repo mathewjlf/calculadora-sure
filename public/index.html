@@ -5,7 +5,6 @@
       rel="icon"
       href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230ea5a4'/><text x='50' y='62' font-size='56' text-anchor='middle' fill='white' font-family='Segoe UI, Roboto, Arial'>$</text></svg>"
     />
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculadoras de Apostas</title>
@@ -22,554 +21,140 @@
         --glass: rgba(255, 255, 255, 0.04);
         --header-gradient: linear-gradient(135deg, #0b948f 0%, #0ea5a4 100%);
       }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      }
-      body {
-        min-height: 100vh;
-        background: #0d172a;
-        color: #e6eef6;
-        padding: 15px;
-        line-height: 1.5;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-      .container {
-        max-width: 1200px;
-        width: 100%;
-        margin: 15px auto;
-      }
+      * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+      body { min-height: 100vh; background: #0d172a; color: #e6eef6; padding: 15px; line-height: 1.5; display:flex; justify-content:center; align-items:flex-start; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+      .container { max-width:1200px; width:100%; margin:15px auto; }
 
       /* tabs */
-      .tabs {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 20px;
-      }
-      .tab-button {
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: var(--muted);
-        padding: 12px 20px;
-        border-radius: 10px;
-        font-size: 16px;
-        cursor: pointer;
-        flex: 1;
-        text-align: center;
-        font-weight: 600;
-        transition: all 0.25s;
-      }
-      .tab-button.active {
-        background: linear-gradient(135deg, var(--accent), var(--accent-light));
-        color: #012;
-        box-shadow: 0 4px 10px rgba(14, 165, 164, 0.12);
-      }
-      .tab-content {
-        display: none;
-      }
-      .tab-content.active {
-        display: block;
-      }
+      .tabs { display:flex; gap:8px; margin-bottom:20px; }
+      .tab-button { background: rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.1); color:var(--muted); padding:12px 20px; border-radius:10px; font-size:16px; cursor:pointer; flex:1; text-align:center; font-weight:600; transition:all .25s; }
+      .tab-button.active { background:linear-gradient(135deg,var(--accent),var(--accent-light)); color:#012; box-shadow:0 4px 10px rgba(14,165,164,0.12); }
+      .tab-content { display:none; }
+      .tab-content.active { display:block; }
 
-      /* Shared card styles (keeps aba1 identical) */
-      .card {
-        background: var(--card);
-        border-radius: 16px;
-        padding: 20px;
-        /* reduzimos sombras pesadas para suavizar rolagem */
-        box-shadow: 0 6px 12px rgba(2, 6, 23, 0.45);
-        margin-bottom: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        position: relative;
-        overflow: visible;
-      }
-      .card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: var(--header-gradient);
-      }
-      .card-title {
-        font-size: 20px;
-        margin: 0 0 18px 0;
-        padding-bottom: 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 600;
-        color: var(--accent-light);
-      }
+      .card { background:var(--card); border-radius:16px; padding:20px; box-shadow:0 6px 12px rgba(2,6,23,0.45); margin-bottom:20px; border:1px solid rgba(255,255,255,0.07); position:relative; overflow:visible; }
+      .card::before { content:""; position:absolute; top:0; left:0; width:100%; height:4px; background:var(--header-gradient); }
+      .card-title { font-size:20px; margin:0 0 18px 0; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; gap:10px; font-weight:600; color:var(--accent-light); }
 
-      .row {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-bottom: 15px;
-      }
-      label {
-        font-size: 14px;
-        color: var(--muted);
-        min-width: 140px;
-        font-weight: 500;
-      }
+      .row { display:flex; gap:15px; align-items:center; flex-wrap:wrap; margin-bottom:15px; }
+      label { font-size:14px; color:var(--muted); min-width:140px; font-weight:500; }
 
-      input[type="number"],
-      input[type="text"],
-      select {
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: white;
-        padding: 12px 16px;
-        border-radius: 10px;
-        font-size: 16px;
-        transition: all 0.18s;
-        flex: 1;
-        max-width: 220px;
-        min-height: 48px; /* aumentado para evitar corte em capturas */
-        line-height: 22px; /* aumentado para evitar corte em capturas */
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-      }
-      select.type,
-      select.stake-type {
-        min-width: 160px;
-        font-size: 15px;
-        padding: 10px 12px;
-        min-height: 44px;
-      }
-      input:focus,
-      select:focus {
-        outline: none;
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(14, 165, 164, 0.12);
-        background: rgba(15, 23, 42, 0.85);
-      }
+      input[type="number"], input[type="text"], select { background: rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.1); color:white; padding:12px 16px; border-radius:10px; font-size:16px; transition:all .18s; flex:1; max-width:220px; min-height:48px; line-height:22px; -webkit-appearance:none; -moz-appearance:none; appearance:none; }
+      select.type { min-width:160px; font-size:15px; padding:10px 12px; min-height:44px; }
+      input:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(14,165,164,0.12); background:rgba(15,23,42,0.85); }
 
-      .table-container {
-        overflow-x: auto;
-        border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        margin-top: 12px;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 8px;
-        background: rgba(255, 255, 255, 0.03);
-        border-radius: 14px;
-        font-size: 15px;
-        min-width: 900px;
-      }
-      th,
-      td {
-        padding: 12px 10px;
-        text-align: center;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-        vertical-align: middle;
-      }
-      th {
-        font-size: 13px;
-        color: var(--accent-light);
-        font-weight: 600;
-        background: rgba(255, 255, 255, 0.04);
-        white-space: nowrap;
-      }
-      td input[type="number"],
-      td input[type="text"],
-      td select {
-        width: 100%;
-        max-width: 160px;
-        margin: 0 auto;
-        background: rgba(255, 255, 255, 0.05);
-        font-size: 15px;
-        padding: 12px;
-        border-radius: 8px;
-        min-height: 48px;
-        line-height: 22px;
-        display: block;
-      }
+      .table-container { overflow-x:auto; border-radius:14px; border:1px solid rgba(255,255,255,0.07); margin-top:12px; }
+      table { width:100%; border-collapse:collapse; margin-top:8px; background:rgba(255,255,255,0.03); border-radius:14px; font-size:15px; min-width:900px; }
+      th, td { padding:12px 10px; text-align:center; border-bottom:1px solid rgba(255,255,255,0.07); vertical-align:middle; }
+      th { font-size:13px; color:var(--accent-light); font-weight:600; background:rgba(255,255,255,0.04); white-space:nowrap; }
+      td input[type="number"], td input[type="text"], td select { width:100%; max-width:160px; margin:0 auto; background:rgba(255,255,255,0.05); font-size:15px; padding:12px; border-radius:8px; min-height:48px; line-height:22px; display:block; }
 
-      #bets-table th:nth-child(1),
-      #bets-table td:nth-child(1) {
-        width: 30px;
-      }
-      #bets-table th:nth-child(2),
-      #bets-table td:nth-child(2) {
-        width: 120px;
-      }
-      #bets-table th:nth-child(3),
-      #bets-table td:nth-child(3) {
-        width: 110px;
-      }
-      #bets-table th:nth-child(4),
-      #bets-table td:nth-child(4) {
-        width: 130px;
-      }
-      #bets-table th:nth-child(5),
-      #bets-table td:nth-child(5) {
-        width: 160px;
-      }
-      #bets-table th:nth-child(6),
-      #bets-table td:nth-child(6) {
-        width: 110px;
-      }
-      #bets-table th:nth-child(7),
-      #bets-table td:nth-child(7) {
-        width: 110px;
-      }
-      #bets-table th:nth-child(8),
-      #bets-table td:nth-child(8) {
-        width: 90px;
-      }
-      #bets-table th:nth-child(9),
-      #bets-table td:nth-child(9) {
-        width: 120px;
-      }
+      /* adjusted widths (stake-type removed) */
+      #bets-table th:nth-child(1), #bets-table td:nth-child(1){ width:30px; }
+      #bets-table th:nth-child(2), #bets-table td:nth-child(2){ width:120px; }
+      #bets-table th:nth-child(3), #bets-table td:nth-child(3){ width:140px; }
+      #bets-table th:nth-child(4), #bets-table td:nth-child(4){ width:260px; }
+      #bets-table th:nth-child(5), #bets-table td:nth-child(5){ width:110px; }
+      #bets-table th:nth-child(6), #bets-table td:nth-child(6){ width:110px; }
+      #bets-table th:nth-child(7), #bets-table td:nth-child(7){ width:90px; }
+      #bets-table th:nth-child(8), #bets-table td:nth-child(8){ width:120px; }
+      #bets-table th:nth-child(9), #bets-table td:nth-child(9){ width:90px; }
 
-      .controls {
-        display: flex;
-        gap: 14px;
-        flex-wrap: wrap;
-        margin-top: 18px;
-      }
-      button {
-        background: linear-gradient(135deg, var(--accent), var(--accent-light));
-        border: none;
-        padding: 12px 22px;
-        border-radius: 12px;
-        color: white;
-        cursor: pointer;
-        font-weight: 700;
-        font-size: 16px;
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: 0 4px 10px rgba(14, 165, 164, 0.12); /* menos pesado */
-      }
-      button.ghost {
-        background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        color: var(--muted);
-        box-shadow: none;
-        font-size: 15px;
-        padding: 10px 18px;
-      }
-      button.warn {
-        background: linear-gradient(135deg, #f97316, #ef6c00);
-        box-shadow: 0 4px 10px rgba(239, 108, 0, 0.12);
-      }
+      .controls { display:flex; gap:14px; flex-wrap:wrap; margin-top:18px; }
+      button { background: linear-gradient(135deg, var(--accent), var(--accent-light)); border:none; padding:12px 22px; border-radius:12px; color:white; cursor:pointer; font-weight:700; font-size:16px; display:inline-flex; align-items:center; gap:10px; box-shadow:0 4px 10px rgba(14,165,164,0.12); }
+      button.ghost { background:transparent; border:1px solid rgba(255,255,255,0.12); color:var(--muted); box-shadow:none; font-size:15px; padding:10px 18px; }
+      button.warn { background:linear-gradient(135deg,#f97316,#ef6c00); box-shadow:0 4px 10px rgba(239,108,0,0.12); }
 
-      .results {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 12px;
-        margin-top: 18px;
-      }
-      .result-item {
-        border-radius: 12px;
-        padding: 16px;
-        background: rgba(255, 255, 255, 0.02);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: all 0.18s ease;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-      }
-      .result-item.positive {
-        border-left: 4px solid var(--green);
-        color: var(--green);
-      }
-      .result-item.negative {
-        border-left: 4px solid var(--red);
-        color: var(--red);
-      }
+      .results { display:grid; grid-template-columns:1fr; gap:12px; margin-top:18px; }
+      .result-item { border-radius:12px; padding:16px; background:rgba(255,255,255,0.02); display:flex; justify-content:space-between; align-items:center; transition:all .18s ease; border:1px solid rgba(255,255,255,0.06); }
+      .result-item.positive { border-left:4px solid var(--green); color:var(--green); }
+      .result-item.negative { border-left:4px solid var(--red); color:var(--red); }
 
-      .small {
-        font-size: 13px;
-        color: var(--muted);
-        opacity: 0.95;
-      }
-      .muted {
-        color: var(--muted);
-      }
-      .footer {
-        margin-top: 18px;
-        color: var(--muted);
-        font-size: 13px;
-        text-align: center;
-        padding: 12px;
-        border-top: 1px solid rgba(255, 255, 255, 0.07);
-      }
+      .small { font-size:13px; color:var(--muted); opacity:0.95; }
+      .muted { color:var(--muted); }
+      .footer { margin-top:18px; color:var(--muted); font-size:13px; text-align:center; padding:12px; border-top:1px solid rgba(255,255,255,0.07); }
 
-      .back-conversion {
-        font-size: 12px;
-        color: #94a3b8;
-        margin-top: 6px;
-        display: block;
-      }
-      .auto-calc {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-top: 12px;
-        padding: 12px;
-        background: rgba(14, 165, 164, 0.06);
-        border-radius: 12px;
-        border: 1px solid rgba(14, 165, 164, 0.1);
-        font-size: 14px;
-      }
+      .back-conversion { font-size:12px; color:#94a3b8; margin-top:6px; display:block; }
+      .auto-calc { display:flex; align-items:center; gap:12px; margin-top:12px; padding:12px; background:rgba(14,165,164,0.06); border-radius:12px; border:1px solid rgba(14,165,164,0.1); font-size:14px; }
 
-      .summary-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 15px;
-        margin-top: 14px;
-      }
-      .summary-item {
-        background: rgba(255, 255, 255, 0.03);
-        border-radius: 12px;
-        padding: 14px;
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-      }
-      .summary-value {
-        font-weight: 800;
-        font-size: 22px;
-        margin: 8px 0;
-        color: var(--accent-light);
-      }
-      .summary-label {
-        font-size: 13px;
-        color: var(--muted);
-      }
+      .summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:15px; margin-top:14px; }
+      .summary-item { background:rgba(255,255,255,0.03); border-radius:12px; padding:14px; text-align:center; border:1px solid rgba(255,255,255,0.06); }
+      .summary-value { font-weight:800; font-size:22px; margin:8px 0; color:var(--accent-light); }
+      .summary-label { font-size:13px; color:var(--muted); }
 
-      tr.highlighted {
-        background: rgba(14, 165, 164, 0.06) !important;
-      }
-      tr.highlighted::after {
-        content: "";
-        display: none;
-      }
+      tr.highlighted { background: rgba(14,165,164,0.06) !important; }
+      tr.highlighted::after { content:""; display:none; }
 
-      input.error {
-        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.18) !important;
-        border-color: var(--red) !important;
-      }
+      input.error { box-shadow:0 0 0 2px rgba(239,68,68,0.18) !important; border-color:var(--red) !important; }
 
-      .loss-negative {
-        color: var(--red);
-        font-weight: 800;
-        font-size: 15px;
-      }
-      .result-amount {
-        font-weight: 900;
-        font-size: 20px;
-        color: inherit;
-      }
+      .loss-negative { color:var(--red); font-weight:800; font-size:15px; }
+      .result-amount { font-weight:900; font-size:20px; color:inherit; }
 
-      td input[type="checkbox"],
-      td input[type="radio"] {
-        display: inline-block;
-        width: 18px;
-        height: 18px;
-        margin: 0 auto;
-        vertical-align: middle;
-        -webkit-appearance: checkbox;
-        appearance: checkbox;
-        background: transparent;
-      }
-      #bets-table th:last-child,
-      #bets-table td:last-child {
-        position: sticky;
-        right: 0;
-        background: rgba(11, 18, 32, 0.98);
-        z-index: 10;
-        border-left: 1px solid rgba(255, 255, 255, 0.1);
-      }
+      td input[type="checkbox"], td input[type="radio"] { display:inline-block; width:18px; height:18px; margin:0 auto; vertical-align:middle; -webkit-appearance:checkbox; appearance:checkbox; background:transparent; }
+      #bets-table th:last-child, #bets-table td:last-child { position: sticky; right: 0; background: rgba(11,18,32,0.98); z-index: 10; border-left: 1px solid rgba(255,255,255,0.1); }
 
-      /* ---- Specific styling for the second tab layout you liked ---- */
-      .surebet-calculator {
-        background: var(--card);
-        border-radius: 16px;
-        padding: 18px;
-        box-shadow: 0 4px 12px rgba(2, 6, 23, 0.35);
-        margin-bottom: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.07);
-      }
-      .surebet-section {
-        padding: 10px 0 6px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      }
-      .surebet-section:last-child {
-        border-bottom: none;
-      }
-      .surebet-card-title {
-        color: var(--accent-light);
-        font-weight: 600;
-        margin-bottom: 12px;
-        font-size: 1.02rem;
-      }
+      /* surebet */
+      .surebet-calculator { background: var(--card); border-radius:16px; padding:18px; box-shadow:0 4px 12px rgba(2,6,23,0.35); margin-bottom:20px; border:1px solid rgba(255,255,255,0.07); }
+      .surebet-section { padding:10px 0 6px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+      .surebet-section:last-child { border-bottom:none; }
+      .surebet-card-title { color:var(--accent-light); font-weight:600; margin-bottom:12px; font-size:1.02rem; }
 
-      .surebet-inputs {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        align-items: center;
-      }
-      .surebet-input {
-        flex: 1;
-        min-width: 160px;
-      }
-      .surebet-input label {
-        display: block;
-        color: var(--muted);
-        margin-bottom: 6px;
-        font-weight: 600;
-      }
-      .surebet-input input {
-        width: 100%;
-        padding: 10px 12px;
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(15, 23, 42, 0.6);
-        color: white;
-        font-weight: 700;
-        text-align: center;
-        min-height: 46px;
-        line-height: 22px;
-      }
+      .surebet-inputs { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+      .surebet-input { flex:1; min-width:160px; }
+      .surebet-input label { display:block; color:var(--muted); margin-bottom:6px; font-weight:600; }
+      .surebet-input input { width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.08); background:rgba(15,23,42,0.6); color:white; font-weight:700; text-align:center; min-height:46px; line-height:22px; }
 
-      .surebet-results-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-top: 12px;
-      }
-      .surebet-result-box {
-        padding: 12px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        text-align: center;
-      }
-      .surebet-result-label {
-        font-size: 0.9rem;
-        color: var(--muted);
-        margin-bottom: 6px;
-      }
-      .surebet-result-value {
-        font-size: 1.25rem;
-        font-weight: 900;
-      }
+      .surebet-results-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+      .surebet-result-box { padding:12px; border-radius:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); text-align:center; }
+      .surebet-result-label { font-size:0.9rem; color:var(--muted); margin-bottom:6px; }
+      .surebet-result-value { font-size:1.25rem; font-weight:900; }
 
-      .profit-positive {
-        color: var(--green);
-      }
-      .profit-negative {
-        color: var(--red);
-      }
-      .profit-neutral {
-        color: var(--accent-light);
-      }
+      .profit-positive { color: var(--green); }
+      .profit-negative { color: var(--red); }
+      .profit-neutral { color: var(--accent-light); }
 
-      .surebet-explanation {
-        margin-top: 12px;
-        padding: 12px;
-        border-left: 4px solid var(--accent);
-        background: rgba(15, 23, 42, 0.6);
-        border-radius: 8px;
-        color: var(--muted);
-      }
+      .surebet-explanation { margin-top:12px; padding:12px; border-left:4px solid var(--accent); background:rgba(15,23,42,0.6); border-radius:8px; color:var(--muted); }
 
       @media (max-width: 768px) {
-        .tabs {
-          flex-direction: column;
-        }
-        .tab-button {
-          width: 100%;
-        }
-        .controls {
-          flex-direction: column;
-        }
-        button {
-          width: 100%;
-          justify-content: center;
-        }
-        table {
-          font-size: 13px;
-        }
-        .surebet-inputs {
-          flex-direction: column;
-        }
-      }
-      #surebet-free {
-        width: 8%;
+        .tabs { flex-direction:column; }
+        .tab-button { width:100%; }
+        .controls { flex-direction:column; }
+        button { width:100%; justify-content:center; }
+        table { font-size:13px; }
+        .surebet-inputs { flex-direction:column; }
       }
 
-      /* Novos estilos para botões de cópia */
-      .copy-btn {
-        background: transparent;
-        border: none;
-        color: var(--accent-light);
-        cursor: pointer;
-        font-size: 14px;
-        margin-left: 6px;
-        opacity: 0.7;
-        transition: all 0.2s;
-        padding: 4px;
-      }
+      /* copy buttons */
+      .copy-btn { background:transparent; border:none; color:var(--accent-light); cursor:pointer; font-size:14px; margin-left:6px; opacity:0.9; transition:all .12s; padding:6px; display:inline-flex; align-items:center; justify-content:center; height:34px; }
+      .copy-btn:hover { opacity:1; transform:scale(1.05); }
+      .copy-success { color:var(--green) !important; animation:pulse .5s; }
+      @keyframes pulse { 0%{transform:scale(1);} 50%{transform:scale(1.2);} 100%{transform:scale(1);} }
 
-      .copy-btn:hover {
-        opacity: 1;
-        transform: scale(1.1);
-      }
+      /* stake pair - alignment improvements */
+      .stake-pair { display:flex; flex-direction:column; gap:6px; align-items:flex-end; min-width:140px; }
+      .stake-pair .row-input { display:flex; align-items:center; gap:8px; justify-content:flex-end; }
+      .stake-pair input { border-radius:8px; padding:10px 10px; min-height:36px; font-size:15px; }
+      .stake-container-back .stake { text-align:left; padding-left:10px; width:180px; }
+      .stake-liability, .stake-matched { text-align:right; padding-right:10px; width:120px; }
+      .stake-label { font-size:12px; color:var(--muted); text-align:center; width:100%; margin-top:4px; }
 
-      .copy-success {
-        color: var(--green) !important;
-        animation: pulse 0.5s;
-      }
+      /* center responsabilidade in surebet tab, and align copy button */
+      .with-copy.center { justify-content:center; gap:8px; align-items:center; }
+      .with-copy.center .surebet-result-value { text-align:center; }
+      .with-copy.center .copy-btn { height:28px; padding:4px 6px; margin-left:6px; }
 
-      @keyframes pulse {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.2);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
+      /* reduce checkbox size inside surebet area */
+      #surebet-area input[type="checkbox"]{ width:16px; height:16px; transform:scale(1); margin-right:8px; }
 
-      /* Ajuste para campos com botão de cópia */
-      .with-copy {
-        display: flex;
-        align-items: center;
-      }
+      /* improved vertical alignment for copy buttons inside table */
+      .stake-container .copy-btn, .stake-container-lay .copy-btn { height:34px; padding:6px; }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="tabs">
-        <button class="tab-button active" data-tab="tab1">
-          Cashback & Sure
-        </button>
-        <button class="tab-button" data-tab="tab2">
-          Calculadora de Freebet
-        </button>
+        <button class="tab-button active" data-tab="tab1">Cashback & Sure</button>
+        <button class="tab-button" data-tab="tab2">Calculadora de Freebet</button>
       </div>
 
       <!-- ============ ABA 1 ============ -->
@@ -584,23 +169,13 @@
             </select>
 
             <label for="conv">Taxa conversão:</label>
-            <input
-              id="conv"
-              type="number"
-              step="0.01"
-              min="0"
-              max="1"
-              value="0.70"
-              title="Ex: 0.7 = 70%"
-            />
+            <input id="conv" type="number" step="0.01" min="0" max="1" value="0.70" title="Ex: 0.7 = 70%">
             <span class="small">(freebet → real)</span>
           </div>
 
           <div class="auto-calc">
-            <input type="checkbox" id="auto-calc" checked />
-            <label for="auto-calc"
-              >Calcular automaticamente ao modificar valores</label
-            >
+            <input type="checkbox" id="auto-calc" checked>
+            <label for="auto-calc">Calcular automaticamente ao modificar valores</label>
           </div>
         </div>
 
@@ -622,7 +197,6 @@
                     <th>Tipo</th>
                     <th>Odd</th>
                     <th>Valor (R$)</th>
-                    <th>Stake tipo</th>
                     <th>Comissão (%)</th>
                     <th>Cashback (%)</th>
                     <th>Editar stake</th>
@@ -635,34 +209,23 @@
             </div>
 
             <div class="footer">
-              <p class="small">
-                <strong>Dica:</strong> marque a fonte do cashback para o cálculo
-                correto.
-              </p>
+              <p class="small"><strong>Dica:</strong> marque a fonte do cashback para o cálculo correto.</p>
             </div>
           </div>
 
           <div class="card" id="results-card">
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-              "
-            >
+            <div style="display:flex; justify-content:space-between; align-items:center;">
               <div class="card-title">📊 Resultados</div>
               <div>
-                <button id="capture-results" class="ghost">
-                  📸 Capturar Bilhete + Resultados
-                </button>
+                <button id="capture-results" class="ghost">📸 Capturar Bilhete + Resultados</button>
               </div>
             </div>
 
             <div id="results" class="results"></div>
             <div id="summary" class="summary-grid"></div>
 
-            <!-- export/import controls for tab1 (ADICIONADO MINIMAMENTE) -->
-            <div class="state-controls" style="margin-top:14px;">
+            <!-- export/import controls for tab1 -->
+            <div class="state-controls" style="margin-top:14px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
               <input id="state-input-tab1" type="text" placeholder="Clique em 'Gerar Código' para obter o hash...">
               <button id="export-tab1" class="ghost" title="Gerar código (copia automaticamente)">🔑 Gerar Código</button>
               <button id="import-tab1" title="Aplicar Código">📥 Aplicar Código</button>
@@ -674,20 +237,10 @@
       <!-- ============ ABA 2 ============ -->
       <div id="tab2" class="tab-content">
         <div class="card surebet-calculator" id="surebet-area">
-          <div
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              gap: 12px;
-              margin-bottom: 12px;
-            "
-          >
-            <div class="surebet-card-title" style="margin: 0">Parâmetros</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px;">
+            <div class="surebet-card-title" style="margin:0;">Parâmetros</div>
             <div>
-              <button id="capture-surebet" class="ghost">
-                📸 Capturar Calculadora
-              </button>
+              <button id="capture-surebet" class="ghost">📸 Capturar Calculadora</button>
             </div>
           </div>
 
@@ -696,30 +249,17 @@
             <div class="surebet-inputs">
               <div class="surebet-input">
                 <label for="surebet-oddBack">Odd (Casa)</label>
-                <input
-                  id="surebet-oddBack"
-                  type="number"
-                  step="0.01"
-                  min="1.01"
-                  value="2.00"
-                />
+                <input id="surebet-oddBack" type="number" step="0.01" min="1.01" value="2.00">
               </div>
               <div class="surebet-input">
                 <label for="surebet-stakeBack">Aposta a favor (R$)</label>
-                <input
-                  id="surebet-stakeBack"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value="100.00"
-                />
+                <input id="surebet-stakeBack" type="number" step="0.01" min="0" value="100.00">
               </div>
 
-              <!-- checkbox alinhado e em linha com o texto -->
-              <div class="surebet-input" style="min-width:220px;">
+              <div class="surebet-input" style="min-width:220px">
                 <div style="display:flex; align-items:center; gap:10px;">
                   <input id="surebet-free" type="checkbox" />
-                  <label for="surebet-free" style="margin:0; color:var(--muted); font-weight:600;">Freebet</label>
+                  <label for="surebet-free" style="font-size:medium; margin:0; color:var(--muted); font-weight:600;">Freebet</label>
                   <span class="small">aposta não é devolvida</span>
                 </div>
               </div>
@@ -731,24 +271,11 @@
             <div class="surebet-inputs">
               <div class="surebet-input">
                 <label for="surebet-oddlay">Odd (Lay)</label>
-                <input
-                  id="surebet-oddlay"
-                  type="number"
-                  step="0.01"
-                  min="1.01"
-                  value="2.00"
-                />
+                <input id="surebet-oddlay" type="number" step="0.01" min="1.01" value="2.00">
               </div>
               <div class="surebet-input">
                 <label for="surebet-comissao">Comissão (%)</label>
-                <input
-                  id="surebet-comissao"
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="100"
-                  value="2.8"
-                />
+                <input id="surebet-comissao" type="number" step="0.1" min="0" max="100" value="2.8">
               </div>
             </div>
 
@@ -759,7 +286,7 @@
               </div>
               <div class="surebet-result-box">
                 <div class="surebet-result-label">Saldo necessário (Responsabilidade)</div>
-                <div class="with-copy">
+                <div class="with-copy center">
                   <div id="surebet-resultResponsabilidade" class="surebet-result-value profit-neutral">100.00</div>
                   <button class="copy-btn" title="Copiar valor">📋</button>
                 </div>
@@ -781,13 +308,8 @@
             </div>
           </div>
 
-          <div class="surebet-explanation">
-            <div style="font-weight:700; color:var(--accent-light); margin-bottom:6px;">Como usar</div>
-            <div class="small">Alocação simplificada em "equilíbrio". Se quiser outro comportamento (priorizar casa ou exchange), me fale que eu ajusto.</div>
-          </div>
-
-          <!-- export/import controls for tab2 (ADICIONADO MINIMAMENTE) -->
-          <div class="state-controls" style="margin-top:12px;">
+          <!-- export/import controls for tab2 -->
+          <div class="state-controls" style="margin-top:12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
             <input id="state-input-tab2" type="text" placeholder="Cole aqui o hash e clique em 'Aplicar Código'..." >
             <button id="export-tab2" class="ghost" title="Gerar código (copia automaticamente)">🔑 Gerar Código</button>
             <button id="import-tab2" title="Aplicar Código">📥 Aplicar Código</button>
@@ -797,807 +319,427 @@
     </div>
 
     <!-- overlay com ações (usado por ambas) -->
-    <div
-      id="screenshot-overlay"
-      style="
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.6);
-        z-index: 9999;
-        align-items: center;
-        justify-content: center;
-      "
-    >
-      <div
-        style="
-          background: var(--card);
-          padding: 18px;
-          border-radius: 10px;
-          border: 1px solid var(--accent);
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          align-items: center;
-          min-width: 260px;
-        "
-      >
-        <button
-          id="close-screenshot"
-          style="
-            align-self: flex-end;
-            background: transparent;
-            border: none;
-            color: var(--muted);
-            font-size: 18px;
-            cursor: pointer;
-          "
-        >
-          ✕
-        </button>
-        <div style="color: var(--accent-light); font-weight: 700">
-          Captura pronta — escolha uma ação:
-        </div>
-        <div style="display: flex; gap: 8px">
-          <button id="copy-screenshot" class="ghost">
-            📋 Copiar para Área de Transferência
-          </button>
-          <button id="save-screenshot" class="ghost">
-            💾 Salvar como Imagem
-          </button>
+    <div id="screenshot-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
+      <div style="background:var(--card); padding:18px; border-radius:10px; border:1px solid var(--accent); display:flex; flex-direction:column; gap:12px; align-items:center; min-width:260px;">
+        <button id="close-screenshot" style="align-self:flex-end; background:transparent; border:none; color:var(--muted); font-size:18px; cursor:pointer;">✕</button>
+        <div style="color:var(--accent-light); font-weight:700;">Captura pronta — escolha uma ação:</div>
+        <div style="display:flex; gap:8px;">
+          <button id="copy-screenshot" class="ghost">📋 Copiar para Área de Transferência</button>
+          <button id="save-screenshot" class="ghost">💾 Salvar como Imagem</button>
         </div>
       </div>
     </div>
 
     <script>
-      /* ===== Função de cópia para área de transferência ===== */
+      /* ===== Simple Base64 encode/decode helpers (UTF-8 safe) ===== */
+      const LZString = {
+        compressToBase64: function (input) {
+          if (input == null) return "";
+          const utf8 = encodeURIComponent(input);
+          const b64 = btoa(utf8);
+          return b64;
+        },
+        decompressFromBase64: function (b64) {
+          if (!b64) return null;
+          try {
+            const utf8 = atob(b64);
+            const str = decodeURIComponent(utf8);
+            return str;
+          } catch (e) {
+            try { return atob(b64); } catch (e2) { return null; }
+          }
+        }
+      };
+
+      /* ===== básico UI/feeds ===== */
       function copyToClipboard(text) {
         if (!text) return;
-        navigator.clipboard
-          .writeText(text)
-          .then(() => {
-            showToast(`Copiado: ${text}`);
-          })
-          .catch((err) => {
-            console.error("Falha ao copiar: ", err);
-            showToast("Erro ao copiar. Veja o console.");
-          });
+        navigator.clipboard.writeText(text).then(()=> showToast(`Copiado: ${text}`)).catch(err=> { console.error('Falha ao copiar:',err); showToast('Erro ao copiar. Veja console.'); });
       }
-
-      /* ===== Feedback visual para cópia ===== */
-      function showCopyFeedback(btn) {
-        const originalHTML = btn.innerHTML;
+      function showCopyFeedback(btn){
+        const original = btn.innerHTML;
         btn.innerHTML = "✓";
-        btn.classList.add("copy-success");
-        setTimeout(() => {
-          btn.innerHTML = originalHTML;
-          btn.classList.remove("copy-success");
-        }, 1000);
+        btn.classList.add('copy-success');
+        setTimeout(()=> { btn.innerHTML = original; btn.classList.remove('copy-success'); }, 900);
+      }
+      function showToast(msg, d=2200){
+        const ex=document.getElementById('custom-toast'); if(ex) ex.remove();
+        const t=document.createElement('div'); t.id='custom-toast'; t.textContent=msg;
+        Object.assign(t.style,{position:'fixed',bottom:'18px',left:'50%',transform:'translateX(-50%)',background:'var(--accent)',color:'#012',padding:'8px 14px',borderRadius:'8px',zIndex:99999,opacity:0});
+        document.body.appendChild(t);
+        setTimeout(()=> t.style.opacity='1',20);
+        setTimeout(()=>{ t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, d);
       }
 
       /* ===== Abas ===== */
-      document.querySelectorAll(".tab-button").forEach((btn) => {
-        btn.addEventListener("click", function () {
-          const tab = this.getAttribute("data-tab");
-          document
-            .querySelectorAll(".tab-button")
-            .forEach((b) => b.classList.remove("active"));
-          document
-            .querySelectorAll(".tab-content")
-            .forEach((t) => t.classList.remove("active"));
-          this.classList.add("active");
-          document.getElementById(tab).classList.add("active");
+      document.querySelectorAll('.tab-button').forEach(btn=>{
+        btn.addEventListener('click', function(){
+          const tab = this.getAttribute('data-tab');
+          document.querySelectorAll('.tab-button').forEach(b=>b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+          this.classList.add('active');
+          document.getElementById(tab).classList.add('active');
         });
       });
 
-      /* ===== Helpers & formatting (Ponto decimal) ===== */
-      function formatCurrencyBR(v) {
-        if (!isFinite(v)) return "R$ 0.00";
-        const sign = v < 0 ? "-" : "";
-        const abs = Math.abs(v);
-        const s = abs.toFixed(2);
-        return sign + "R$ " + s;
-      }
-      function solveLinear(A, b) {
-        const n = A.length;
-        for (let i = 0; i < n; i++) A[i].push(b[i]);
-        for (let i = 0; i < n; i++) {
-          let maxRow = i;
-          for (let k = i + 1; k < n; k++)
-            if (Math.abs(A[k][i]) > Math.abs(A[maxRow][i])) maxRow = k;
-          [A[i], A[maxRow]] = [A[maxRow], A[i]];
-          let piv = A[i][i];
-          if (Math.abs(piv) < 1e-12) continue;
-          for (let j = i; j <= n; j++) A[i][j] /= piv;
-          for (let k = 0; k < n; k++)
-            if (k !== i) {
-              const f = A[k][i];
-              for (let j = i; j <= n; j++) A[k][j] -= f * A[i][j];
-            }
-        }
-        return A.map((r) => r[n]);
-      }
-      function layToBack(lay) {
-        return 1 / (1 - 1 / lay);
-      }
-      function showToast(msg, d = 2200) {
-        const ex = document.getElementById("custom-toast");
-        if (ex) ex.remove();
-        const t = document.createElement("div");
-        t.id = "custom-toast";
-        t.textContent = msg;
-        Object.assign(t.style, {
-          position: "fixed",
-          bottom: "18px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          background: "var(--accent)",
-          color: "#012",
-          padding: "8px 14px",
-          borderRadius: "8px",
-          zIndex: 99999,
-          opacity: 0,
-        });
-        document.body.appendChild(t);
-        setTimeout(() => (t.style.opacity = "1"), 20);
-        setTimeout(() => {
-          t.style.opacity = "0";
-          setTimeout(() => t.remove(), 300);
-        }, d);
-      }
+      /* ===== Helpers matemáticos ===== */
+      function formatCurrencyBR(v){ if(!isFinite(v)) return 'R$ 0.00'; const sign = v < 0 ? '-' : ''; const abs = Math.abs(v); const s = abs.toFixed(2); return sign + 'R$ ' + s; }
+      function solveLinear(A,b){ const n=A.length; for(let i=0;i<n;i++) A[i].push(b[i]); for(let i=0;i<n;i++){ let maxRow=i; for(let k=i+1;k<n;k++) if(Math.abs(A[k][i])>Math.abs(A[maxRow][i])) maxRow=k; [A[i],A[maxRow]]=[A[maxRow],A[i]]; let piv=A[i][i]; if(Math.abs(piv)<1e-12) continue; for(let j=i;j<=n;j++) A[i][j]/=piv; for(let k=0;k<n;k++) if(k!==i){ const f=A[k][i]; for(let j=i;j<=n;j++) A[k][j]-=f*A[i][j]; } } return A.map(r=>r[n]); }
+      function layToBack(lay){ return 1/(1 - 1/lay); }
 
-      /* ===== Aba 1 DOM & logic (restaurada) ===== */
-      const tbody = document.querySelector("#bets-table tbody");
-      const addRowBtn = document.getElementById("add-row");
-      const calcBtn = document.getElementById("calc");
-      const roundAllBtn = document.getElementById("round-all");
-      const convInput = document.getElementById("conv");
-      const cbType = document.getElementById("cb-type");
-      const resultsDiv = document.getElementById("results");
-      const summaryDiv = document.getElementById("summary");
-      const clearBtn = document.getElementById("clear");
-      const autoCalcCheckbox = document.getElementById("auto-calc");
-      const captureResultsBtn = document.getElementById("capture-results");
-      const screenshotOverlay = document.getElementById("screenshot-overlay");
+      /* ===== DOM references ===== */
+      const tbody = document.querySelector('#bets-table tbody');
+      const addRowBtn = document.getElementById('add-row');
+      const calcBtn = document.getElementById('calc');
+      const roundAllBtn = document.getElementById('round-all');
+      const convInput = document.getElementById('conv');
+      const cbType = document.getElementById('cb-type');
+      const resultsDiv = document.getElementById('results');
+      const summaryDiv = document.getElementById('summary');
+      const clearBtn = document.getElementById('clear');
+      const autoCalcCheckbox = document.getElementById('auto-calc');
+      const captureResultsBtn = document.getElementById('capture-results');
+      const screenshotOverlay = document.getElementById('screenshot-overlay');
+      const closeScreenshot = document.getElementById('close-screenshot');
+      const copyScreenshot = document.getElementById('copy-screenshot');
+      const saveScreenshot = document.getElementById('save-screenshot');
+      const captureArea = document.getElementById('capture-area');
 
-      function init() {
-        tbody.innerHTML = "";
-        addRow("back", "", "", "liability", "", "", true, false);
-        addRow("back", "", "", "liability", "", "", false, false);
+      /* ===== init / rows ===== */
+      function init(){
+        tbody.innerHTML = '';
+        addRow('back','','', true); // <<< first row will be source by default
+        addRow('back','','', false);
         refreshIndex();
         updateHighlightedRows();
-        if (screenshotOverlay) screenshotOverlay.style.display = "none";
+        if(screenshotOverlay) screenshotOverlay.style.display = 'none';
         window.screenshotCanvas = null;
 
-        // Delegar evento para botões de cópia nas linhas (não mexi no layout)
-        tbody.addEventListener("click", function (e) {
-          const btn = e.target.closest(".copy-btn");
-          if (btn) {
-            const stakeInput = btn.closest(".stake-container")?.querySelector(".stake");
-            if (stakeInput) {
-              navigator.clipboard?.writeText?.(stakeInput.value).then(()=>{
-                showToast('Stake copiada');
-                showCopyFeedback(btn);
-              }).catch(()=> showToast('Não foi possível copiar'));
-            }
-          }
+        // delegated copy buttons (back, liability, matched)
+        tbody.addEventListener('click', function(e){
+          const btn = e.target.closest('.copy-btn');
+          if(!btn) return;
+          const tr = btn.closest('tr');
+          let candidate = null;
+          if(btn.classList.contains('copy-back')) candidate = tr.querySelector('.stake');
+          else if(btn.classList.contains('copy-liability')) candidate = tr.querySelector('.stake-liability');
+          else if(btn.classList.contains('copy-matched')) candidate = tr.querySelector('.stake-matched');
+          else candidate = tr.querySelector('.stake, .stake-liability, .stake-matched');
+          if(candidate) { copyToClipboard(candidate.value); showCopyFeedback(btn); }
         });
       }
 
-      function updateHighlightedRows() {
-        Array.from(tbody.children).forEach((tr) =>
-          tr.querySelector(".is-source").checked
-            ? tr.classList.add("highlighted")
-            : tr.classList.remove("highlighted")
-        );
-      }
+      function updateHighlightedRows(){ Array.from(tbody.children).forEach(tr=> tr.querySelector('.is-source').checked ? tr.classList.add('highlighted') : tr.classList.remove('highlighted')); }
 
-      function addRow(
-        type = "back",
-        odd = "",
-        stake = "",
-        stakeType = "liability",
-        comm = "",
-        cb = "",
-        checked = false,
-        locked = false
-      ) {
+      // addRow now accepts checked (is-source)
+      function addRow(type='back', odd='', stake='', checked=false){
         const idx = tbody.children.length + 1;
-        const matchedSel = stakeType === "matched" ? "selected" : "";
-        const liabilitySel = stakeType === "liability" ? "selected" : "";
-        const tr = document.createElement("tr");
+        const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${idx}</td>
           <td>
             <select class="type">
-              <option value="back" ${type === "back" ? "selected" : ""}>Back</option>
-              <option value="lay" ${type === "lay" ? "selected" : ""}>Lay</option>
+              <option value="back" ${type==='back'?'selected':''}>Back</option>
+              <option value="lay" ${type==='lay'?'selected':''}>Lay</option>
             </select>
           </td>
           <td>
             <input class="odd" type="number" step="0.01" min="1.01" value="${odd}">
-            <div class="back-conversion" style="font-size:11px;color:var(--muted);margin-top:6px;display:${type === "back" ? "none" : "block"}"></div>
+            <div class="back-conversion" style="font-size:11px;color:var(--muted);margin-top:6px;display:${type==='back'?'none':'block'}"></div>
           </td>
           <td>
-            <div class="stake-container" style="position:relative">
-              <input class="stake" type="text" value="${stake}">
-              <button class="copy-btn" title="Copiar valor" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);">📋</button>
+            <div class="stake-container-back" style="position:relative; display:${type==='back'?'block':'none'}">
+              <div class="stake-container" style="position:relative">
+                <input class="stake" type="text" value="${stake}">
+                <button class="copy-btn copy-back" title="Copiar valor" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);">📋</button>
+              </div>
+            </div>
+
+            <div class="stake-container-lay" style="display:${type==='lay'?'flex':'none'}; justify-content:flex-end;">
+              <div class="stake-pair">
+                <div class="row-input">
+                  <input class="stake-liability" type="text" value="${stake}">
+                  <button class="copy-btn copy-liability" title="Copiar responsabilidade">📋</button>
+                </div>
+                <div class="stake-label">Responsabilidade</div>
+
+                <div class="row-input">
+                  <input class="stake-matched" type="text" value="${stake}">
+                  <button class="copy-btn copy-matched" title="Copiar aposta a favor">📋</button>
+                </div>
+                <div class="stake-label">Aposta a favor</div>
+              </div>
             </div>
           </td>
-          <td>
-            <select class="stake-type" style="display:${type === "back" ? "none" : "block"}">
-              <option value="matched" ${matchedSel}>Matched</option>
-              <option value="liability" ${liabilitySel}>Liability</option>
-            </select>
-          </td>
-          <td><input class="comm" type="number" step="0.01" min="0" value="${comm}"></td>
-          <td><input class="cb" type="number" step="0.1" min="0" value="${cb}"></td>
-          <td style="text-align:center"><input class="lock" type="checkbox" ${locked ? "checked" : ""} title="Destravar para editar stake manualmente"></td>
-          <td style="text-align:center"><input class="is-source" type="radio" name="cbsource" ${checked ? "checked" : ""}></td>
+          <td><input class="comm" type="number" step="0.01" min="0" value=""></td>
+          <td><input class="cb" type="number" step="0.1" min="0" value=""></td>
+          <td style="text-align:center"><input class="lock" type="checkbox" title="Destravar para editar stake manualmente"></td>
+          <td style="text-align:center"><input class="is-source" type="radio" name="cbsource" ${checked? 'checked':''}></td>
           <td><button class="remove ghost">🗑️ Remover</button></td>
         `;
         tbody.appendChild(tr);
-        if (checked) tr.classList.add("highlighted");
+        if(checked) tr.classList.add('highlighted');
 
-        const typeSel = tr.querySelector(".type");
-        const oddInput = tr.querySelector(".odd");
-        const backConversion = tr.querySelector(".back-conversion");
-        const stakeInput = tr.querySelector(".stake");
-        const stakeTypeSel = tr.querySelector(".stake-type");
-        const commInput = tr.querySelector(".comm");
-        const cbInput = tr.querySelector(".cb");
+        const typeSel = tr.querySelector('.type');
+        const oddInput = tr.querySelector('.odd');
+        const backConversion = tr.querySelector('.back-conversion');
+        const stakeInput_back = tr.querySelector('.stake');
+        const stakeLiability = tr.querySelector('.stake-liability');
+        const stakeMatched = tr.querySelector('.stake-matched');
+        const stakeContainerBack = tr.querySelector('.stake-container-back');
+        const stakeContainerLay = tr.querySelector('.stake-container-lay');
+        const commInput = tr.querySelector('.comm');
+        const cbInput = tr.querySelector('.cb');
 
-        function updateRowForType() {
-          if (typeSel.value === "lay") {
-            stakeTypeSel.style.display = "block";
-            backConversion.style.display = "block";
-            try {
-              stakeTypeSel.value = "liability";
-            } catch (e) {}
+        function updateRowForType(){
+          if(typeSel.value==='lay'){
+            backConversion.style.display='block';
+            stakeContainerBack.style.display='none';
+            stakeContainerLay.style.display='flex';
             updateBackConversion();
+            trySyncPairOnSwitch();
           } else {
-            stakeTypeSel.style.display = "none";
-            backConversion.style.display = "none";
+            backConversion.style.display='none';
+            stakeContainerBack.style.display='block';
+            stakeContainerLay.style.display='none';
           }
         }
-        function updateBackConversion() {
+        function updateBackConversion(){
           const layVal = parseFloat(oddInput.value) || 0;
-          if (typeSel.value === "lay" && layVal > 1)
-            backConversion.textContent = "Back: " + layToBack(layVal).toFixed(3);
-          else backConversion.textContent = "";
+          if(typeSel.value==='lay' && layVal>1) backConversion.textContent = 'Back: ' + layToBack(layVal).toFixed(3);
+          else backConversion.textContent = '';
+        }
+        function trySyncPairOnSwitch(){
+          const backValRaw = stakeInput_back ? stakeInput_back.value.trim() : '';
+          if(backValRaw !== ''){
+            const v = parseFloat(backValRaw.replace(',','.'));
+            if(isFinite(v)){
+              if(stakeLiability) stakeLiability.value = Number(v).toFixed(2);
+              const L = parseFloat(oddInput.value) || NaN;
+              if(isFinite(L) && L-1 !== 0){
+                const M = v / (L - 1);
+                if(stakeMatched) stakeMatched.value = isFinite(M)? Number(M).toFixed(2) : '';
+              }
+            }
+          }
         }
 
-        tr.querySelector(".remove").addEventListener("click", () => {
-          tr.remove();
-          refreshIndex();
-          resultsDiv.innerHTML = "";
-          summaryDiv.innerHTML = "";
-          updateHighlightedRows();
-        });
-        typeSel.addEventListener("change", () => {
-          updateRowForType();
-          updateHighlightedRows();
-          if (autoCalcCheckbox.checked) compute();
-        });
-        oddInput.addEventListener("input", () => {
-          updateBackConversion();
-          if (autoCalcCheckbox.checked) compute();
-        });
-        stakeInput.addEventListener("input", () => {
-          if (autoCalcCheckbox.checked) compute();
-        });
-        commInput.addEventListener("input", () => {
-          if (autoCalcCheckbox.checked) compute();
-        });
-        cbInput.addEventListener("input", () => {
-          if (autoCalcCheckbox.checked) compute();
-        });
-        tr.querySelector(".is-source").addEventListener("change", () => {
-          updateHighlightedRows();
-          if (autoCalcCheckbox.checked) compute();
-        });
+        tr.querySelector('.remove').addEventListener('click', ()=>{ tr.remove(); refreshIndex(); resultsDiv.innerHTML=''; summaryDiv.innerHTML=''; updateHighlightedRows(); });
+        typeSel.addEventListener('change', ()=>{ updateRowForType(); updateHighlightedRows(); if(autoCalcCheckbox.checked) compute(); });
+        oddInput.addEventListener('input', ()=>{ updateBackConversion(); if(typeSel.value==='lay'){ if(stakeLiability && stakeLiability.value.trim()!==''){ const L=parseFloat(oddInput.value)||NaN; const Li=parseFloat(stakeLiability.value.replace(',','.'))||NaN; if(isFinite(L) && isFinite(Li) && (L-1)!==0){ const M = Li / (L-1); if(stakeMatched) stakeMatched.value = Number(M).toFixed(2); } } else if(stakeMatched && stakeMatched.value.trim()!==''){ const L=parseFloat(oddInput.value)||NaN; const M=parseFloat(stakeMatched.value.replace(',','.'))||NaN; if(isFinite(L) && isFinite(M)){ const Li = M * (L - 1); if(stakeLiability) stakeLiability.value = Number(Li).toFixed(2); } } } if(autoCalcCheckbox.checked) compute(); });
+        if(stakeInput_back) stakeInput_back.addEventListener('input', ()=>{ if(autoCalcCheckbox.checked) compute(); });
+        if(stakeLiability) stakeLiability.addEventListener('input', ()=>{ const L = parseFloat(oddInput.value)||NaN; const Li = parseFloat(stakeLiability.value.replace(',','.'))||NaN; if(isFinite(L) && isFinite(Li) && (L-1)!==0){ const M = Li / (L - 1); if(stakeMatched) stakeMatched.value = Number(M).toFixed(2); } if(autoCalcCheckbox.checked) compute(); });
+        if(stakeMatched) stakeMatched.addEventListener('input', ()=>{ const L = parseFloat(oddInput.value)||NaN; const M = parseFloat(stakeMatched.value.replace(',','.'))||NaN; if(isFinite(L) && isFinite(M)){ const Li = M * (L - 1); if(stakeLiability) stakeLiability.value = Number(Li).toFixed(2); } if(autoCalcCheckbox.checked) compute(); });
+        commInput.addEventListener('input', ()=>{ if(autoCalcCheckbox.checked) compute(); });
+        cbInput.addEventListener('input', ()=>{ if(autoCalcCheckbox.checked) compute(); });
+        tr.querySelector('.is-source').addEventListener('change', ()=>{ updateHighlightedRows(); if(autoCalcCheckbox.checked) compute(); });
 
         updateRowForType();
         return tr;
       }
 
-      function refreshIndex() {
-        Array.from(tbody.children).forEach(
-          (tr, i) => (tr.children[0].textContent = i + 1)
-        );
-      }
-      function resetTable() {
-        if (confirm("Tem certeza que deseja limpar todos os bilhetes?")) {
-          tbody.innerHTML = "";
-          resultsDiv.innerHTML = "";
-          summaryDiv.innerHTML = "";
-          updateHighlightedRows();
-        }
-      }
+      function refreshIndex(){ Array.from(tbody.children).forEach((tr,i)=> tr.children[0].textContent = i+1); }
+      function resetTable(){ if(confirm('Tem certeza que deseja limpar todos os bilhetes?')){ tbody.innerHTML=''; resultsDiv.innerHTML=''; summaryDiv.innerHTML=''; updateHighlightedRows(); } }
 
-      function parseInputs() {
+      /* ===== parse / compute (adapted to stake pair) ===== */
+      function parseInputs(){
         const rows = Array.from(tbody.children);
-        if (rows.length < 2) return { error: "Adicione ao menos 2 bilhetes." };
-        const types = [],
-          odds = [],
-          stakes = [],
-          stakeTypes = [],
-          comms = [],
-          rawCb = [],
-          locks = [];
-        let sourceIdx = -1;
-        rows.forEach((tr, i) => {
-          const oddVal = tr.querySelector(".odd").value.trim();
-          const stakeVal = tr.querySelector(".stake").value.trim();
-          const commVal = tr.querySelector(".comm").value.trim();
-          const cbVal = tr.querySelector(".cb").value.trim();
-          types.push(tr.querySelector(".type").value);
-          odds.push(oddVal === "" ? NaN : parseFloat(oddVal));
-          stakes.push(
-            stakeVal === "" ? NaN : parseFloat(stakeVal.replace(",", "."))
-          );
-          stakeTypes.push(
-            tr.querySelector(".stake-type")
-              ? tr.querySelector(".stake-type").value
-              : "liability"
-          );
-          comms.push(commVal === "" ? 0 : parseFloat(commVal) / 100);
-          rawCb.push(cbVal === "" ? 0 : parseFloat(cbVal) / 100);
-          locks.push(tr.querySelector(".lock").checked);
-          if (tr.querySelector(".is-source").checked) sourceIdx = i;
+        if(rows.length < 2) return { error: 'Adicione ao menos 2 bilhetes.' };
+        const types=[], odds=[], stakesBack=[], stakesLiability=[], stakesMatched=[], stakeTypes=[], comms=[], rawCb=[], locks=[];
+        let sourceIdx=-1;
+        rows.forEach((tr,i)=>{
+          const oddVal = tr.querySelector('.odd').value.trim();
+          const backVal = tr.querySelector('.stake') ? tr.querySelector('.stake').value.trim() : '';
+          const liVal = tr.querySelector('.stake-liability') ? tr.querySelector('.stake-liability').value.trim() : '';
+          const mVal = tr.querySelector('.stake-matched') ? tr.querySelector('.stake-matched').value.trim() : '';
+          const commVal = tr.querySelector('.comm').value.trim();
+          const cbVal = tr.querySelector('.cb').value.trim();
+
+          types.push(tr.querySelector('.type').value);
+          odds.push( oddVal === '' ? NaN : parseFloat(oddVal) );
+          stakesBack.push( backVal === '' ? NaN : parseFloat(backVal.replace(',','.')) );
+          stakesLiability.push( liVal === '' ? NaN : parseFloat(liVal.replace(',','.')) );
+          stakesMatched.push( mVal === '' ? NaN : parseFloat(mVal.replace(',','.')) );
+          comms.push( commVal === '' ? 0 : parseFloat(commVal)/100 );
+          rawCb.push( cbVal === '' ? 0 : parseFloat(cbVal)/100 );
+          locks.push( tr.querySelector('.lock').checked );
+          if(tr.querySelector('.is-source').checked) sourceIdx = i;
         });
-        if (sourceIdx < 0)
-          return {
-            error: "Marque qual bilhete gera o cashback (Fonte Cashback).",
-          };
-        if (!(Number.isFinite(stakes[sourceIdx]) && stakes[sourceIdx] > 0))
-          return { error: "Informe stake válida (R$) na linha fonte." };
-        for (let i = 0; i < odds.length; i++)
-          if (!Number.isFinite(odds[i]) || odds[i] <= 1)
-            return { error: `Odd inválida na linha ${i + 1}.` };
-        const conv = parseFloat(convInput.value) || 0;
-        if (conv < 0 || conv > 1) {
-          convInput.classList.add("error");
-          return { error: "Taxa de conversão deve ser entre 0 e 1." };
-        } else convInput.classList.remove("error");
-        return {
-          types,
-          odds,
-          stakes,
-          stakeTypes,
-          comms,
-          rawCb,
-          locks,
-          sourceIdx,
-        };
+
+        if(sourceIdx < 0) return { error: 'Marque qual bilhete gera o cashback (Fonte Cashback).' };
+
+        // source must have stake
+        const srcType = types[sourceIdx];
+        if(srcType === 'back'){
+          if(!(Number.isFinite(stakesBack[sourceIdx]) && stakesBack[sourceIdx] > 0)) return { error: 'Informe stake válida (R$) na linha fonte.' };
+        } else {
+          const hasLi = Number.isFinite(stakesLiability[sourceIdx]) && stakesLiability[sourceIdx] > 0;
+          const hasM = Number.isFinite(stakesMatched[sourceIdx]) && stakesMatched[sourceIdx] > 0;
+          if(!hasLi && !hasM) return { error: 'Informe stake válida (Responsabilidade ou Aposta a favor) na linha fonte.' };
+        }
+
+        for(let i=0;i<odds.length;i++) if(!Number.isFinite(odds[i]) || odds[i] <= 1) return { error: `Odd inválida na linha ${i+1}.` };
+        const conv = parseFloat(convInput.value)||0; if(conv < 0 || conv > 1){ convInput.classList.add('error'); return { error:'Taxa de conversão deve ser entre 0 e 1.' }; } else convInput.classList.remove('error');
+        return { types, odds, stakesBack, stakesLiability, stakesMatched, comms, rawCb, locks, sourceIdx };
       }
 
-      function computeResultsOnly() {
-        const parsed = parseInputs();
-        if (parsed.error) {
-          showInlineMessage(parsed.error);
-          return;
-        }
-        const {
-          types,
-          odds,
-          stakes,
-          stakeTypes,
-          comms,
-          rawCb,
-          locks,
-          sourceIdx,
-        } = parsed;
-        const n = odds.length;
-        const conv = Math.max(0, Math.min(1, parseFloat(convInput.value) || 0));
-        const isFreebet = cbType.value === "freebet";
-        const backOddNoComm = [],
-          backOddEff = [],
-          backStakeEquiv = [],
-          effCb = rawCb.map((c) => (isFreebet ? c * conv : c));
-        for (let i = 0; i < n; i++) {
-          if (types[i] === "back") {
-            backOddNoComm[i] = odds[i];
-            backOddEff[i] = 1 + (backOddNoComm[i] - 1) * (1 - (comms[i] || 0));
-            backStakeEquiv[i] = Number.isFinite(stakes[i]) ? stakes[i] : NaN;
-          } else {
-            const L = odds[i];
-            const O = layToBack(L);
-            backOddNoComm[i] = O;
-            backOddEff[i] = 1 + (O - 1) * (1 - (comms[i] || 0));
-            let Li;
-            if (stakeTypes[i] === "matched") {
-              const M = Number.isFinite(stakes[i]) ? stakes[i] : NaN;
-              Li = Number.isFinite(M) ? M * (L - 1) : NaN;
-            } else Li = Number.isFinite(stakes[i]) ? stakes[i] : NaN;
-            backStakeEquiv[i] = Li;
-          }
+      function computeResultsOnly(){
+        const parsed = parseInputs(); if(parsed.error){ showInlineMessage(parsed.error); return; }
+        const { types, odds, stakesBack, stakesLiability, stakesMatched, comms, rawCb, locks, sourceIdx } = parsed;
+        const n = odds.length; const conv = Math.max(0, Math.min(1, parseFloat(convInput.value)||0)); const isFreebet = cbType.value === 'freebet';
+        const backOddNoComm = [], backOddEff = [], backStakeEquiv = [], effCb = rawCb.map(c => isFreebet ? c*conv : c);
+        for(let i=0;i<n;i++){
+          if(types[i]==='back'){ backOddNoComm[i]=odds[i]; backOddEff[i]=1+(backOddNoComm[i]-1)*(1-(comms[i]||0)); backStakeEquiv[i]=Number.isFinite(stakesBack[i])?stakesBack[i]:NaN; }
+          else { const L = odds[i]; const O = layToBack(L); backOddNoComm[i]=O; backOddEff[i]=1+(O-1)*(1-(comms[i]||0)); if(Number.isFinite(stakesLiability[i])) backStakeEquiv[i]=stakesLiability[i]; else if(Number.isFinite(stakesMatched[i])) backStakeEquiv[i]=stakesMatched[i]*(L-1); else backStakeEquiv[i]=NaN; }
         }
 
-        resultsDiv.innerHTML = "";
-        for (let i = 0; i < n; i++) {
-          const win =
-            (Number.isFinite(backStakeEquiv[i]) ? backStakeEquiv[i] : 0) *
-            (backOddEff[i] - 1);
-          let loss = 0;
-          for (let j = 0; j < n; j++)
-            if (j !== i)
-              loss +=
-                (Number.isFinite(backStakeEquiv[j]) ? backStakeEquiv[j] : 0) *
-                (1 - effCb[j]);
+        resultsDiv.innerHTML='';
+        for(let i=0;i<n;i++){
+          const win = (Number.isFinite(backStakeEquiv[i])?backStakeEquiv[i]:0) * (backOddEff[i]-1);
+          let loss=0;
+          for(let j=0;j<n;j++) if(j!==i) loss += (Number.isFinite(backStakeEquiv[j])?backStakeEquiv[j]:0) * (1 - effCb[j]);
           const value = win - loss;
-          const lossGross = backStakeEquiv.reduce(
-            (acc, val, j) =>
-              j === i ? acc : acc + (Number.isFinite(val) ? val : 0),
-            0
-          );
+          const lossGross = backStakeEquiv.reduce((acc,val,j)=> j===i ? acc : acc + (Number.isFinite(val)?val:0), 0);
           const realNet = win - lossGross;
-          const cbFreebetAmount = Number.isFinite(
-            backStakeEquiv[parsed.sourceIdx]
-          )
-            ? backStakeEquiv[parsed.sourceIdx] * (rawCb[parsed.sourceIdx] || 0)
-            : 0;
-          const cbConverted = isFreebet
-            ? cbFreebetAmount * conv
-            : cbFreebetAmount;
+          const cbFreebetAmount = Number.isFinite(backStakeEquiv[parsed.sourceIdx]) ? backStakeEquiv[parsed.sourceIdx] * (rawCb[parsed.sourceIdx]||0) : 0;
+          const cbConverted = isFreebet ? cbFreebetAmount * conv : cbFreebetAmount;
 
-          const item = document.createElement("div");
-          item.className =
-            "result-item " + (value >= 0 ? "positive" : "negative");
-          const rawCbPerc = ((rawCb[i] || 0) * 100).toFixed(1);
-          const commPerc = ((comms[i] || 0) * 100).toFixed(2);
+          const item = document.createElement('div');
+          item.className = 'result-item ' + (value>=0? 'positive' : 'negative');
+          const rawCbPerc = ((rawCb[i]||0)*100).toFixed(1);
+          const commPerc = ((comms[i]||0)*100).toFixed(2);
           const typeLabel = types[i].toUpperCase();
 
-          let leftHTML = `<div><strong>Se bilhete ${
-            i + 1
-          } ganhar</strong><div class="small">Tipo: ${typeLabel} — Cashback: ${rawCbPerc}% — Comissão: ${commPerc}%</div>`;
-          if (i !== parsed.sourceIdx) {
-            leftHTML += `<div class="small" style="margin-top:8px">Perda em saldo real (bruta): <strong>${formatCurrencyBR(
-              lossGross
-            )}</strong></div>`;
-            leftHTML += `<div class="small loss-negative">Perda em saldo real (líquida): <strong>${formatCurrencyBR(
-              realNet
-            )}</strong></div>`;
-            if (cbFreebetAmount > 0)
-              leftHTML += `<div class="small">Cashback da fonte: <strong>${formatCurrencyBR(
-                cbFreebetAmount
-              )}</strong> ${
-                isFreebet
-                  ? `(freebet) → convertido: ${formatCurrencyBR(cbConverted)}`
-                  : ""
-              }</div>`;
+          let leftHTML = `<div><strong>Se bilhete ${i+1} ganhar</strong><div class="small">Tipo: ${typeLabel} — Cashback: ${rawCbPerc}% — Comissão: ${commPerc}%</div>`;
+          if(i !== parsed.sourceIdx){
+            leftHTML += `<div class="small" style="margin-top:8px">Perda em saldo real (bruta): <strong>${formatCurrencyBR(lossGross)}</strong></div>`;
+            leftHTML += `<div class="small loss-negative">Perda em saldo real (líquida): <strong>${formatCurrencyBR(realNet)}</strong></div>`;
+            if(cbFreebetAmount>0) leftHTML += `<div class="small">Cashback da fonte: <strong>${formatCurrencyBR(cbFreebetAmount)}</strong> ${isFreebet? `(freebet) → convertido: ${formatCurrencyBR(cbConverted)}` : ''}</div>`;
           }
           leftHTML += `</div>`;
 
-          const rightHTML = `<div style="text-align:right"><div class="result-amount">${formatCurrencyBR(
-            value
-          )}</div><div class="small">Resultado líquido</div></div>`;
+          const rightHTML = `<div style="text-align:right"><div class="result-amount">${formatCurrencyBR(value)}</div><div class="small">Resultado líquido</div></div>`;
 
           item.innerHTML = leftHTML + rightHTML;
           resultsDiv.appendChild(item);
         }
 
         // resumo
-        const totalInvestido = backStakeEquiv.reduce(
-          (a, b) => a + (Number.isFinite(b) ? b : 0),
-          0
-        );
-        const totalCashback = effCb.reduce(
-          (acc, cb, i) =>
-            acc +
-            (Number.isFinite(backStakeEquiv[i]) ? backStakeEquiv[i] : 0) * cb,
-          0
-        );
-        const profit =
-          (Number.isFinite(backStakeEquiv[parsed.sourceIdx])
-            ? backStakeEquiv[parsed.sourceIdx]
-            : 0) *
-          (backOddEff[parsed.sourceIdx] - 1);
-        let totalLoss = 0;
-        for (let j = 0; j < n; j++)
-          if (j !== parsed.sourceIdx)
-            totalLoss +=
-              (Number.isFinite(backStakeEquiv[j]) ? backStakeEquiv[j] : 0) *
-              (1 - effCb[j]);
+        const totalInvestido = backStakeEquiv.reduce((a,b)=> a + (Number.isFinite(b)?b:0),0);
+        const totalCashback = effCb.reduce((acc,cb,i)=> acc + ((Number.isFinite(backStakeEquiv[i])?backStakeEquiv[i]:0) * cb), 0);
+        const profit = (Number.isFinite(backStakeEquiv[parsed.sourceIdx])?backStakeEquiv[parsed.sourceIdx]:0) * (backOddEff[parsed.sourceIdx]-1);
+        let totalLoss=0;
+        for(let j=0;j<n;j++) if(j!==parsed.sourceIdx) totalLoss += (Number.isFinite(backStakeEquiv[j])?backStakeEquiv[j]:0) * (1 - effCb[j]);
         const P = profit - totalLoss;
-        const roi = totalInvestido > 0 ? (P / totalInvestido) * 100 : 0;
+        const roi = totalInvestido>0 ? (P/totalInvestido*100) : 0;
 
         summaryDiv.innerHTML = `
-          <div class="summary-item"><div class="summary-label">Total Investido</div><div class="summary-value">${formatCurrencyBR(
-            totalInvestido
-          )}</div></div>
-          <div class="summary-item"><div class="summary-label">Cashback Total</div><div class="summary-value">${formatCurrencyBR(
-            totalCashback
-          )}</div></div>
-          <div class="summary-item"><div class="summary-label">Lucro Esperado (P)</div><div class="summary-value">${formatCurrencyBR(
-            P
-          )}</div></div>
-          <div class="summary-item"><div class="summary-label">Retorno (ROI)</div><div class="summary-value">${roi.toFixed(
-            2
-          )}%</div></div>
+          <div class="summary-item"><div class="summary-label">Total Investido</div><div class="summary-value">${formatCurrencyBR(totalInvestido)}</div></div>
+          <div class="summary-item"><div class="summary-label">Cashback Total</div><div class="summary-value">${formatCurrencyBR(totalCashback)}</div></div>
+          <div class="summary-item"><div class="summary-label">Lucro Esperado (P)</div><div class="summary-value">${formatCurrencyBR(P)}</div></div>
+          <div class="summary-item"><div class="summary-label">Retorno (ROI)</div><div class="summary-value">${roi.toFixed(2)}%</div></div>
         `;
       }
 
-      function compute() {
+      function compute(){
         const parsed = parseInputs();
-        if (parsed.error) {
-          showInlineMessage(parsed.error);
-          return;
-        }
-        const {
-          types,
-          odds,
-          stakes,
-          stakeTypes,
-          comms,
-          rawCb,
-          locks,
-          sourceIdx,
-        } = parsed;
-        const n = odds.length;
-        const conv = Math.max(0, Math.min(1, parseFloat(convInput.value) || 0));
-        const isFreebet = cbType.value === "freebet";
-        const backOddNoComm = [],
-          backOddEff = [],
-          backStakeEquiv = [],
-          effCb = rawCb.map((c) => (isFreebet ? c * conv : c));
-        for (let i = 0; i < n; i++) {
-          if (types[i] === "back") {
-            backOddNoComm[i] = odds[i];
-            backOddEff[i] = 1 + (backOddNoComm[i] - 1) * (1 - (comms[i] || 0));
-            backStakeEquiv[i] = Number.isFinite(stakes[i]) ? stakes[i] : NaN;
-          } else {
-            const L = odds[i];
-            const O = layToBack(L);
-            backOddNoComm[i] = O;
-            backOddEff[i] = 1 + (O - 1) * (1 - (comms[i] || 0));
-            let Li;
-            if (stakeTypes[i] === "matched") {
-              const M = Number.isFinite(stakes[i]) ? stakes[i] : NaN;
-              Li = Number.isFinite(M) ? M * (L - 1) : NaN;
-            } else Li = Number.isFinite(stakes[i]) ? stakes[i] : NaN;
-            backStakeEquiv[i] = Li;
-          }
+        if(parsed.error){ showInlineMessage(parsed.error); return; }
+        const { types, odds, stakesBack, stakesLiability, stakesMatched, comms, rawCb, locks, sourceIdx } = parsed;
+        const n = odds.length; const conv = Math.max(0, Math.min(1, parseFloat(convInput.value)||0)); const isFreebet = cbType.value === 'freebet';
+        const backOddNoComm = [], backOddEff = [], backStakeEquiv = [], effCb = rawCb.map(c => isFreebet ? c*conv : c);
+
+        for(let i=0;i<n;i++){
+          if(types[i]==='back'){ backOddNoComm[i]=odds[i]; backOddEff[i]=1+(backOddNoComm[i]-1)*(1-(comms[i]||0)); backStakeEquiv[i]=Number.isFinite(stakesBack[i])?stakesBack[i]:NaN; }
+          else { const L=odds[i]; const O = layToBack(L); backOddNoComm[i]=O; backOddEff[i]=1+(O-1)*(1-(comms[i]||0)); if(Number.isFinite(stakesLiability[i])) backStakeEquiv[i]=stakesLiability[i]; else if(Number.isFinite(stakesMatched[i])) backStakeEquiv[i]=stakesMatched[i]*(L-1); else backStakeEquiv[i]=NaN; }
         }
 
         const knownIdxs = [];
-        for (let i = 0; i < n; i++) {
-          if (i === sourceIdx) knownIdxs.push(i);
-          else if (locks[i]) {
-            if (Number.isFinite(backStakeEquiv[i])) knownIdxs.push(i);
-            else {
-              showInlineMessage(
-                `Linha ${i + 1} travada (lock) sem stake válida.`
-              );
-              return;
-            }
-          }
-        }
+        for(let i=0;i<n;i++){ if(i===sourceIdx) knownIdxs.push(i); else if(locks[i]){ if(Number.isFinite(backStakeEquiv[i])) knownIdxs.push(i); else { showInlineMessage(`Linha ${i+1} travada (lock) sem stake válida.`); return; } } }
 
-        const unknown = [...Array(n).keys()].filter(
-          (i) => !knownIdxs.includes(i)
-        );
-        if (unknown.length === 0) {
-          computeResultsOnly();
-          return;
-        }
+        const unknown = [...Array(n).keys()].filter(i => !knownIdxs.includes(i));
+        if(unknown.length===0){ computeResultsOnly(); return; }
 
-        const m = unknown.length,
-          vars = m + 1,
-          A = [],
-          b = [];
-        for (let i = 0; i < n; i++) {
+        const m = unknown.length, vars = m+1, A=[], b=[];
+        for(let i=0;i<n;i++){
           const row = Array(vars).fill(0);
-          unknown.forEach((u, idx) => {
-            row[idx] = u === i ? backOddEff[i] - 1 : -(1 - effCb[u]);
-          });
-          let knownContrib = 0;
-          knownIdxs.forEach((k) => {
-            if (k === i)
-              knownContrib +=
-                (Number.isFinite(backStakeEquiv[k]) ? backStakeEquiv[k] : 0) *
-                (backOddEff[i] - 1);
-            else
-              knownContrib +=
-                -(Number.isFinite(backStakeEquiv[k]) ? backStakeEquiv[k] : 0) *
-                (1 - effCb[k]);
-          });
-          row[vars - 1] = -1;
-          A.push(row);
-          b.push(-knownContrib);
+          unknown.forEach((u, idx)=>{ row[idx] = (u===i) ? (backOddEff[i]-1) : (-(1 - effCb[u])); });
+          let knownContrib=0;
+          knownIdxs.forEach(k=>{ if(k===i) knownContrib += (Number.isFinite(backStakeEquiv[k])?backStakeEquiv[k]:0) * (backOddEff[i]-1); else knownContrib += - (Number.isFinite(backStakeEquiv[k])?backStakeEquiv[k]:0) * (1 - effCb[k]); });
+          row[vars-1] = -1;
+          A.push(row); b.push(-knownContrib);
         }
 
         let sol;
-        try {
-          sol = solveLinear(A, b);
-        } catch (e) {
-          showInlineMessage("Erro ao resolver sistema: " + e);
-          return;
-        }
+        try{ sol = solveLinear(A,b); } catch(e){ showInlineMessage('Erro ao resolver sistema: '+e); return; }
 
-        unknown.forEach((u, idx) => {
+        unknown.forEach((u, idx)=>{
           const backVal = sol[idx];
-          if (!isFinite(backVal)) {
-            showInlineMessage("Solução inválida");
-            return;
-          }
-          if (types[u] === "back") {
-            tbody.children[u].querySelector(".stake").value =
-              Number(backVal).toFixed(2);
-          } else {
+          if(!isFinite(backVal)){ showInlineMessage('Solução inválida'); return; }
+          if(types[u]==='back'){ tbody.children[u].querySelector('.stake').value = Number(backVal).toFixed(2); }
+          else {
             const L = odds[u];
             const Li = backVal;
-            if (stakeTypes[u] == "matched") {
-              const M = Li / (L - 1);
-              tbody.children[u].querySelector(".stake").value =
-                Number(M).toFixed(2);
-            } else
-              tbody.children[u].querySelector(".stake").value =
-                Number(Li).toFixed(2);
+            const tr = tbody.children[u];
+            if(tr.querySelector('.stake-liability')) tr.querySelector('.stake-liability').value = Number(Li).toFixed(2);
+            const M = (L-1)!==0 ? (Li / (L - 1)) : NaN;
+            if(tr.querySelector('.stake-matched')) tr.querySelector('.stake-matched').value = isFinite(M)?Number(M).toFixed(2): '';
           }
         });
 
         computeResultsOnly();
       }
 
-      function showInlineMessage(text) {
-        resultsDiv.innerHTML = `<div class="result-item negative"><div><strong>Erro</strong><div class="small">${text}</div></div></div>`;
-      }
+      function showInlineMessage(text){ resultsDiv.innerHTML = `<div class="result-item negative"><div><strong>Erro</strong><div class="small">${text}</div></div></div>`; }
 
       /* ===== Captura / screenshot (ambas abas) ===== */
-      async function captureResults() {
-        const target = document.getElementById("capture-area");
-        if (!target) {
-          alert("Área de captura não encontrada");
-          return;
-        }
-        try {
-          const canvas = await html2canvas(target, {
-            scale: 2,
-            backgroundColor: "#0b1220",
-            useCORS: true,
-          });
-          window.screenshotCanvas = canvas;
-          screenshotOverlay.style.display = "flex";
-        } catch (err) {
-          console.error("Erro ao capturar:", err);
-          alert("Erro ao capturar. Veja console.");
-        }
-      }
-      async function captureSurebet() {
-        const target = document.getElementById("surebet-area");
-        if (!target) {
-          alert("Área de captura (surebet) não encontrada");
-          return;
-        }
-        try {
-          const canvas = await html2canvas(target, {
-            scale: 2,
-            backgroundColor: "#0b1220",
-            useCORS: true,
-          });
-          window.screenshotCanvas = canvas;
-          screenshotOverlay.style.display = "flex";
-        } catch (err) {
-          console.error("Erro ao capturar surebet:", err);
-          alert("Erro ao capturar. Veja console.");
-        }
-      }
-      function copyScreenshotToClipboard() {
-        if (!window.screenshotCanvas) {
-          alert("Nenhuma captura disponível");
-          return;
-        }
-        window.screenshotCanvas.toBlob((blob) => {
-          const item = new ClipboardItem({ "image/png": blob });
-          navigator.clipboard
-            .write([item])
-            .then(() => {
-              showToast("Captura copiada para a área de transferência");
-              screenshotOverlay.style.display = "none";
-            })
-            .catch((err) => {
-              console.error("Erro ao copiar:", err);
-              alert("Erro ao copiar. Verifique permissões do navegador.");
-            });
-        });
-      }
-      function saveScreenshotToFile() {
-        if (!window.screenshotCanvas) {
-          alert("Nenhuma captura disponível");
-          return;
-        }
-        const link = document.createElement("a");
-        link.download = "captura-bilhete-resultados.png";
-        link.href = window.screenshotCanvas.toDataURL("image/png");
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        screenshotOverlay.style.display = "none";
-        showToast("Imagem salva");
-      }
+      async function captureResults(){ const target = captureArea; if(!target){ alert('Área de captura não encontrada'); return; } try{ const canvas = await html2canvas(target, { scale:2, backgroundColor:'#0b1220', useCORS:true }); window.screenshotCanvas = canvas; screenshotOverlay.style.display = 'flex'; }catch(err){ console.error('Erro ao capturar:',err); alert('Erro ao capturar. Veja console.'); } }
+      async function captureSurebet(){ const target = document.getElementById('surebet-area'); if(!target){ alert('Área de captura (surebet) não encontrada'); return; } try{ const canvas = await html2canvas(target, { scale:2, backgroundColor:'#0b1220', useCORS:true }); window.screenshotCanvas = canvas; screenshotOverlay.style.display = 'flex'; }catch(err){ console.error('Erro ao capturar surebet:',err); alert('Erro ao capturar. Veja console.'); } }
+      function copyScreenshotToClipboard(){ if(!window.screenshotCanvas){ alert('Nenhuma captura disponível'); return; } window.screenshotCanvas.toBlob(blob=>{ const item = new ClipboardItem({ 'image/png': blob }); navigator.clipboard.write([item]).then(()=>{ showToast('Captura copiada para a área de transferência'); screenshotOverlay.style.display='none'; }).catch(err=>{ console.error('Erro ao copiar:',err); alert('Erro ao copiar. Verifique permissões do navegador.'); }); }); }
+      function saveScreenshotToFile(){ if(!window.screenshotCanvas){ alert('Nenhuma captura disponível'); return; } const link = document.createElement('a'); link.download = 'captura-bilhete-resultados.png'; link.href = window.screenshotCanvas.toDataURL('image/png'); document.body.appendChild(link); link.click(); link.remove(); screenshotOverlay.style.display='none'; showToast('Imagem salva'); }
 
       /* ===== RoundAll & events & init ===== */
-      roundAllBtn.addEventListener("click", () => {
+      roundAllBtn.addEventListener('click', ()=>{
         const rows = Array.from(tbody.children);
-        if (rows.length === 0) {
-          showToast("Nenhuma linha para arredondar");
-          return;
-        }
-        let changed = 0;
-        rows.forEach((tr) => {
-          const input = tr.querySelector(".stake");
-          const raw = input.value.trim();
-          if (raw === "") return;
-          const val = parseFloat(raw.replace(",", "."));
-          if (!isFinite(val)) return;
-          const rounded = Math.round(val);
-          if (Number(input.value) !== rounded) {
-            input.value = rounded.toFixed(2);
-            changed++;
-            tr.classList.add("rounded-highlight");
-            setTimeout(() => tr.classList.remove("rounded-highlight"), 900);
-          }
+        if(rows.length===0){ showToast('Nenhuma linha para arredondar'); return; }
+        let changed=0;
+        rows.forEach(tr=>{
+          const inputs = Array.from(tr.querySelectorAll('.stake, .stake-liability, .stake-matched'));
+          inputs.forEach(input=>{
+            const raw = (input.value||'').toString().trim();
+            if(raw==='') return;
+            const val = parseFloat(raw.replace(',','.'));
+            if(!isFinite(val)) return;
+            const rounded = Math.round(val);
+            if(Number(input.value) !== rounded){ input.value = rounded.toFixed(2); changed++; tr.classList.add('rounded-highlight'); setTimeout(()=>tr.classList.remove('rounded-highlight'),900); }
+          });
         });
-        if (changed > 0) {
-          compute();
-          showToast(`${changed} stake(s) arredondada(s)`);
-        } else showToast("Nenhuma stake para arredondar");
+        if(changed>0){ compute(); showToast(`${changed} stake(s) arredondada(s)`); } else showToast('Nenhuma stake para arredondar');
       });
 
-      addRowBtn.addEventListener("click", () => {
-        addRow();
-        refreshIndex();
-        if (autoCalcCheckbox.checked) compute();
-      });
-      calcBtn.addEventListener("click", compute);
-      clearBtn.addEventListener("click", resetTable);
-      autoCalcCheckbox.addEventListener("change", function () {
-        if (this.checked) compute();
-      });
-      cbType.addEventListener("change", () => {
-        convInput.disabled = cbType.value !== "freebet";
-        if (autoCalcCheckbox.checked) compute();
-      });
-      convInput.addEventListener("input", () => {
-        const v = parseFloat(convInput.value) || 0;
-        if (v < 0 || v > 1) convInput.classList.add("error");
-        else convInput.classList.remove("error");
-        if (autoCalcCheckbox.checked) compute();
-      });
-      captureResultsBtn.addEventListener("click", captureResults);
-      const captureSurebetBtn = document.getElementById("capture-surebet");
-      if (captureSurebetBtn)
-        captureSurebetBtn.addEventListener("click", captureSurebet);
-      document.getElementById("close-screenshot").addEventListener(
-        "click",
-        () => (screenshotOverlay.style.display = "none")
-      );
-      document
-        .getElementById("copy-screenshot")
-        .addEventListener("click", copyScreenshotToClipboard);
-      document
-        .getElementById("save-screenshot")
-        .addEventListener("click", saveScreenshotToFile);
+      addRowBtn.addEventListener('click', ()=>{ addRow(); refreshIndex(); if(autoCalcCheckbox.checked) compute(); });
+      calcBtn.addEventListener('click', compute);
+      clearBtn.addEventListener('click', resetTable);
+      autoCalcCheckbox.addEventListener('change', function(){ if(this.checked) compute(); });
+      cbType.addEventListener('change', ()=>{ convInput.disabled = cbType.value !== 'freebet'; if(autoCalcCheckbox.checked) compute(); });
+      convInput.addEventListener('input', ()=>{ const v = parseFloat(convInput.value)||0; if(v<0||v>1) convInput.classList.add('error'); else convInput.classList.remove('error'); if(autoCalcCheckbox.checked) compute(); });
+      captureResultsBtn.addEventListener('click', captureResults);
+      const captureSurebetBtn = document.getElementById('capture-surebet'); if(captureSurebetBtn) captureSurebetBtn.addEventListener('click', captureSurebet);
+      closeScreenshot.addEventListener('click', ()=> screenshotOverlay.style.display = 'none');
+      copyScreenshot.addEventListener('click', copyScreenshotToClipboard);
+      saveScreenshot.addEventListener('click', saveScreenshotToFile);
 
       init();
 
       /* ===== Surebet calculations (aba 2) ===== */
-      function calcularSurebet() {
-        const isFreebet = document.getElementById("surebet-free").checked;
-        const oddBack =
-          parseFloat(document.getElementById("surebet-oddBack").value) || 0;
-        const stakeBack =
-          parseFloat(document.getElementById("surebet-stakeBack").value) || 0;
-        const oddlay =
-          parseFloat(document.getElementById("surebet-oddlay").value) || 0;
-        const comissao =
-          (parseFloat(document.getElementById("surebet-comissao").value) || 0) /
-          100;
+      function calcularSurebet(){
+        const isFreebet = document.getElementById('surebet-free').checked;
+        const oddBack = parseFloat(document.getElementById('surebet-oddBack').value) || 0;
+        const stakeBack = parseFloat(document.getElementById('surebet-stakeBack').value) || 0;
+        const oddlay = parseFloat(document.getElementById('surebet-oddlay').value) || 0;
+        const comissao = (parseFloat(document.getElementById('surebet-comissao').value) || 0) / 100;
 
         let stakeLay, responsabilidade, lucroCasa, lucroExchange;
-
-        if (isFreebet) {
+        if(isFreebet){
           const lucroPotencial = stakeBack * (oddBack - 1);
           const equilibrio = lucroPotencial / (oddlay - comissao);
           stakeLay = equilibrio;
@@ -1619,89 +761,31 @@
         lucroCasa = Math.round(lucroCasa * 100) / 100;
         lucroExchange = Math.round(lucroExchange * 100) / 100;
 
-        document.getElementById("surebet-stakeLay").textContent =
-          stakeLay.toFixed(2);
-        document.getElementById("surebet-resultResponsabilidade").textContent =
-          responsabilidade.toFixed(2);
-        document.getElementById("surebet-lucroCasa").textContent =
-          lucroCasa.toFixed(2);
-        document.getElementById("surebet-lucroExchange").textContent =
-          lucroExchange.toFixed(2);
+        document.getElementById('surebet-stakeLay').textContent = stakeLay.toFixed(2);
+        document.getElementById('surebet-resultResponsabilidade').textContent = responsabilidade.toFixed(2);
+        document.getElementById('surebet-lucroCasa').textContent = lucroCasa.toFixed(2);
+        document.getElementById('surebet-lucroExchange').textContent = lucroExchange.toFixed(2);
 
-        // aplica classes de cor (verde/vermelho/neutro)
-        const elCasa = document.getElementById("surebet-lucroCasa");
-        const elEx = document.getElementById("surebet-lucroExchange");
-        elCasa.className =
-          "surebet-result-value " +
-          (lucroCasa > 0
-            ? "profit-positive"
-            : lucroCasa < 0
-            ? "profit-negative"
-            : "profit-neutral");
-        elEx.className =
-          "surebet-result-value " +
-          (lucroExchange > 0 ? "profit-positive" : lucroExchange < 0 ? "profit-negative" : "profit-neutral");
+        const elCasa = document.getElementById('surebet-lucroCasa');
+        const elEx = document.getElementById('surebet-lucroExchange');
+        elCasa.className = 'surebet-result-value ' + (lucroCasa > 0 ? 'profit-positive' : lucroCasa < 0 ? 'profit-negative' : 'profit-neutral');
+        elEx.className = 'surebet-result-value ' + (lucroExchange > 0 ? 'profit-positive' : lucroExchange < 0 ? 'profit-negative' : 'profit-neutral');
       }
 
-      // listeners para inputs da aba2
-      [
-        "surebet-oddBack",
-        "surebet-stakeBack",
-        "surebet-oddlay",
-        "surebet-comissao",
-        "surebet-free",
-      ].forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener("input", calcularSurebet);
-      });
-
-      // Evento para o botão de cópia da responsabilidade na aba2
-      document
-        .querySelector("#surebet-area .copy-btn")
-        ?.addEventListener("click", function () {
-          const text = document.getElementById(
-            "surebet-resultResponsabilidade"
-          ).textContent;
-          copyToClipboard(text);
-          showCopyFeedback(this);
-        });
-
-      // inicializa aba2
+      ['surebet-oddBack','surebet-stakeBack','surebet-oddlay','surebet-comissao','surebet-free'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('input', calcularSurebet); });
+      document.querySelector('#surebet-area .copy-btn')?.addEventListener('click', function(){ const text = document.getElementById('surebet-resultResponsabilidade').textContent; copyToClipboard(text); showCopyFeedback(this); });
       calcularSurebet();
 
       /* ====== STATE EXPORT / IMPORT (por aba) ====== */
 
-      // Revertido para BASE64 simples (sem compressão LZ)
-      const LZString = {
-        compressToBase64: function(input){
-          if (input == null) return "";
-          // encodeURIComponent -> btoa for unicode safety
-          try {
-            const utf8 = encodeURIComponent(input);
-            return btoa(utf8);
-          } catch(e) {
-            try { return btoa(input); } catch(e2) { return ""; }
-          }
-        },
-        decompressFromBase64: function(b64){
-          if (!b64) return null;
-          try {
-            const utf8 = atob(b64);
-            return decodeURIComponent(utf8);
-          } catch(e) {
-            try { return atob(b64); } catch(e2) { return null; }
-          }
-        }
-      };
-
-      // collect only tab1 state
       function collectTab1State(){
         const rows = Array.from(tbody.children).map(tr=>{
           return {
             type: tr.querySelector('.type').value,
             odd: tr.querySelector('.odd').value,
-            stake: tr.querySelector('.stake').value,
-            stakeType: tr.querySelector('.stake-type') ? tr.querySelector('.stake-type').value : 'liability',
+            stakeBack: tr.querySelector('.stake') ? tr.querySelector('.stake').value : '',
+            stakeLiability: tr.querySelector('.stake-liability') ? tr.querySelector('.stake-liability').value : '',
+            stakeMatched: tr.querySelector('.stake-matched') ? tr.querySelector('.stake-matched').value : '',
             comm: tr.querySelector('.comm').value,
             cb: tr.querySelector('.cb').value,
             locked: tr.querySelector('.lock').checked,
@@ -1711,7 +795,6 @@
         return { v:1, ts: Date.now(), tab1: { conv: convInput.value, cbType: cbType.value, autoCalc: autoCalcCheckbox.checked, rows } };
       }
 
-      // collect only tab2 state
       function collectTab2State(){
         return { v:1, ts: Date.now(), tab2: {
           oddBack: document.getElementById('surebet-oddBack').value,
@@ -1722,10 +805,14 @@
         } };
       }
 
+      function exportObjToString(obj){
+        const json = JSON.stringify(obj);
+        return LZString.compressToBase64(json);
+      }
       function importStateFromString(str){
         try{
           const json = LZString.decompressFromBase64(str);
-          if(json===null || json===undefined) throw new Error('Decompress returned null');
+          if(!json) throw new Error('Decompress returned null');
           const obj = JSON.parse(json);
           return obj;
         }catch(e){
@@ -1734,26 +821,27 @@
         }
       }
 
-      function exportObjToString(obj){
-        const json = JSON.stringify(obj);
-        return LZString.compressToBase64(json);
-      }
-
       function applyTab1State(objTab1){
         if(!objTab1) { showToast('Código não contém estado da Aba 1'); return; }
         try{
-          convInput.value = objTab1.conv;
-          cbType.value = objTab1.cbType;
+          convInput.value = objTab1.conv || convInput.value;
+          cbType.value = objTab1.cbType || cbType.value;
           autoCalcCheckbox.checked = !!objTab1.autoCalc;
-          // rebuild rows
           tbody.innerHTML = '';
           if(Array.isArray(objTab1.rows) && objTab1.rows.length>0){
-            objTab1.rows.forEach(r=>{
-              addRow(r.type||'back', r.odd!==undefined? r.odd : '', r.stake!==undefined? r.stake : '', r.stakeType||'liability', r.comm!==undefined? r.comm : '', r.cb!==undefined? r.cb : '', !!r.isSource, !!r.locked);
+            objTab1.rows.forEach((r, i)=>{
+              const checked = !!r.isSource;
+              addRow(r.type||'back', r.odd!==undefined? r.odd : '', r.stakeBack!==undefined? r.stakeBack : '', checked);
+              const tr = tbody.children[tbody.children.length-1];
+              if(r.stakeLiability !== undefined && tr.querySelector('.stake-liability')) tr.querySelector('.stake-liability').value = r.stakeLiability;
+              if(r.stakeMatched !== undefined && tr.querySelector('.stake-matched')) tr.querySelector('.stake-matched').value = r.stakeMatched;
+              if(r.comm !== undefined) tr.querySelector('.comm').value = r.comm;
+              if(r.cb !== undefined) tr.querySelector('.cb').value = r.cb;
+              if(r.locked) tr.querySelector('.lock').checked = true;
             });
           } else {
-            addRow('back','','','liability','','',true,false);
-            addRow('back','','','liability','','',false,false);
+            addRow('back','','', true);
+            addRow('back','','', false);
           }
           refreshIndex();
           updateHighlightedRows();
@@ -1791,42 +879,28 @@
           const obj = collectTab1State();
           const s = exportObjToString(obj);
           stateInputTab1.value = s;
-          navigator.clipboard?.writeText?.(s).then(()=> showToast('Código Aba1 gerado e copiado')).catch(()=> showToast('Código Aba1 gerado (copiar manualmente)'));
-        }catch(e){
-          console.error(e);
-          showToast('Erro ao gerar código Aba1');
-        }
+          navigator.clipboard.writeText(s).then(()=> showToast('Código Aba1 gerado e copiado')).catch(()=> showToast('Código Aba1 gerado (copiar manualmente)'));
+        }catch(e){ console.error(e); showToast('Erro ao gerar código Aba1'); }
       });
 
       importTab1Btn.addEventListener('click', async ()=>{
         let s = stateInputTab1.value.trim();
         if(!s){
-          // tenta ler do clipboard (user-initiated click => deve funcionar se permitido)
-          if(navigator.clipboard && navigator.clipboard.readText){
-            try{
-              s = await navigator.clipboard.readText();
-              if(!s || !s.trim()){ showToast('Área de transferência vazia'); return; }
-              stateInputTab1.value = s;
-              showToast('Conteúdo do clipboard colado automaticamente');
-            }catch(e){
-              console.error('Erro lendo clipboard', e);
-              showToast('Não foi possível ler o clipboard. Cole manualmente.');
-              return;
-            }
-          } else {
-            showToast('API do clipboard não disponível — cole manualmente');
+          try{
+            s = await navigator.clipboard.readText();
+            if(!s) { showToast('Área de transferência vazia'); return; }
+            stateInputTab1.value = s;
+          }catch(e){
+            console.warn('clipboard read failed', e);
+            showToast('Cole o código no campo e clique em aplicar');
             return;
           }
         }
         const obj = importStateFromString(s);
         if(!obj){ showToast('Código inválido ou corrompido'); return; }
         if(obj.tab1) applyTab1State(obj.tab1);
-        else if(obj.tab2 && !obj.tab1){
-          showToast('Código contém apenas Aba 2 — nada aplicado em Aba 1');
-        } else {
-          if(obj.tab1) applyTab1State(obj.tab1);
-          else showToast('Código não contém dados da Aba 1');
-        }
+        else if(obj.tab2 && !obj.tab1){ showToast('Código contém apenas Aba 2 — nada aplicado em Aba 1'); }
+        else { if(obj.tab1) applyTab1State(obj.tab1); else showToast('Código não contém dados da Aba 1'); }
       });
 
       // Tab2 UI hooks
@@ -1839,29 +913,24 @@
           const obj = collectTab2State();
           const s = exportObjToString(obj);
           stateInputTab2.value = s;
-          navigator.clipboard?.writeText?.(s).then(()=> showToast('Código Aba2 gerado e copiado')).catch(()=> showToast('Código Aba2 gerado (copiar manualmente)'));
-        }catch(e){
-          console.error(e);
-          showToast('Erro ao gerar código Aba2');
-        }
+          navigator.clipboard.writeText(s).then(()=> showToast('Código Aba2 gerado e copiado')).catch(()=> showToast('Código Aba2 gerado (copiar manualmente)'));
+        }catch(e){ console.error(e); showToast('Erro ao gerar código Aba2'); }
       });
 
       importTab2Btn.addEventListener('click', async ()=>{
         let s = stateInputTab2.value.trim();
         if(!s){
-          if(navigator.clipboard && navigator.clipboard.readText){
-            try{ s = await navigator.clipboard.readText(); if(!s || !s.trim()){ showToast('Área de transferência vazia'); return; } stateInputTab2.value = s; showToast('Conteúdo do clipboard colado automaticamente'); } catch(e){ console.error('Erro lendo clipboard', e); showToast('Não foi possível ler o clipboard. Cole manualmente.'); return; }
-          } else { showToast('API do clipboard não disponível — cole manualmente'); return; }
+          try{
+            s = await navigator.clipboard.readText();
+            if(!s) { showToast('Área de transferência vazia'); return; }
+            stateInputTab2.value = s;
+          }catch(e){ console.warn('clipboard read failed', e); showToast('Cole o código no campo e clique em aplicar'); return; }
         }
         const obj = importStateFromString(s);
         if(!obj){ showToast('Código inválido ou corrompido'); return; }
         if(obj.tab2) applyTab2State(obj.tab2);
-        else if(obj.tab1 && !obj.tab2){
-          showToast('Código contém apenas Aba 1 — nada aplicado em Aba 2');
-        } else {
-          if(obj.tab2) applyTab2State(obj.tab2);
-          else showToast('Código não contém dados da Aba 2');
-        }
+        else if(obj.tab1 && !obj.tab2){ showToast('Código contém apenas Aba 1 — nada aplicado em Aba 2'); }
+        else { if(obj.tab2) applyTab2State(obj.tab2); else showToast('Código não contém dados da Aba 2'); }
       });
 
       // convenience: Ctrl/Cmd+Enter to apply from input
@@ -1875,13 +944,6 @@
         });
       });
 
-      /* ---------- small copy-feedback helper ---------- */
-      function showCopyFeedback(btn){
-        const original = btn.innerHTML;
-        btn.innerHTML = '✓';
-        btn.classList.add('copy-success');
-        setTimeout(()=>{ btn.innerHTML = original; btn.classList.remove('copy-success'); }, 900);
-      }
     </script>
   </body>
 </html>
