@@ -873,6 +873,23 @@
         }
       }
 
+      // helper: if user passed a full URL extract param 's'
+      function extractStateParam(s){
+        if(!s) return s;
+        s = s.trim();
+        // if looks like full URL, use URL parser
+        try{
+          const u = new URL(s);
+          const p = u.searchParams.get('s');
+          if(p) return p;
+        }catch(e){}
+        // if contains s= somewhere, simple regex
+        const m = s.match(/[?&]s=([^&]+)/);
+        if(m && m[1]) return decodeURIComponent(m[1]);
+        // otherwise assume it's raw string already
+        return s;
+      }
+
       // Tab1 UI hooks
       const exportTab1Btn = document.getElementById('export-tab1');
       const importTab1Btn = document.getElementById('import-tab1');
@@ -882,8 +899,10 @@
         try{
           const obj = collectTab1State();
           const s = exportObjToString(obj);
-          stateInputTab1.value = s;
-          navigator.clipboard.writeText(s).then(()=> showToast('Código Aba1 gerado e copiado')).catch(()=> showToast('Código Aba1 gerado (copiar manualmente)'));
+          // build full link containing the state
+          const full = location.origin + location.pathname + '?s=' + encodeURIComponent(s);
+          stateInputTab1.value = full;
+          navigator.clipboard.writeText(full).then(()=> showToast('Link Aba1 gerado e copiado')).catch(()=> showToast('Link Aba1 gerado (copiar manualmente)'));
         }catch(e){ console.error(e); showToast('Erro ao gerar código Aba1'); }
       });
 
@@ -900,6 +919,8 @@
             return;
           }
         }
+        // accept full URL or raw hash
+        s = extractStateParam(s);
         const obj = importStateFromString(s);
         if(!obj){ showToast('Código inválido ou corrompido'); return; }
         if(obj.tab1) applyTab1State(obj.tab1);
@@ -916,8 +937,9 @@
         try{
           const obj = collectTab2State();
           const s = exportObjToString(obj);
-          stateInputTab2.value = s;
-          navigator.clipboard.writeText(s).then(()=> showToast('Código Aba2 gerado e copiado')).catch(()=> showToast('Código Aba2 gerado (copiar manualmente)'));
+          const full = location.origin + location.pathname + '?s=' + encodeURIComponent(s);
+          stateInputTab2.value = full;
+          navigator.clipboard.writeText(full).then(()=> showToast('Link Aba2 gerado e copiado')).catch(()=> showToast('Link Aba2 gerado (copiar manualmente)'));
         }catch(e){ console.error(e); showToast('Erro ao gerar código Aba2'); }
       });
 
@@ -930,6 +952,7 @@
             stateInputTab2.value = s;
           }catch(e){ console.warn('clipboard read failed', e); showToast('Cole o código no campo e clique em aplicar'); return; }
         }
+        s = extractStateParam(s);
         const obj = importStateFromString(s);
         if(!obj){ showToast('Código inválido ou corrompido'); return; }
         if(obj.tab2) applyTab2State(obj.tab2);
@@ -947,6 +970,27 @@
           }
         });
       });
+
+      // On page load: if URL has ?s=..., try to import and apply
+      (function applyFromUrlOnLoad(){
+        try{
+          const urlParams = new URLSearchParams(window.location.search);
+          const s = urlParams.get('s');
+          if(s){
+            const decoded = s; // it's URL-encoded already in link
+            const obj = importStateFromString(decoded);
+            if(obj){
+              if(obj.tab1) applyTab1State(obj.tab1);
+              if(obj.tab2) applyTab2State(obj.tab2);
+              showToast('Estado carregado do link');
+            } else {
+              showToast('Link inválido ou corrompido');
+            }
+          }
+        }catch(e){
+          console.warn('applyFromUrlOnLoad error', e);
+        }
+      })();
 
     </script>
   </body>
