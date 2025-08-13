@@ -134,8 +134,12 @@
       .stake-pair { display:flex; flex-direction:column; gap:6px; align-items:flex-end; min-width:140px; }
       .stake-pair .row-input { display:flex; align-items:center; gap:8px; justify-content:flex-end; }
       .stake-pair input { border-radius:8px; padding:10px 10px; min-height:36px; font-size:15px; }
-      .stake-container-back .stake { text-align:left; padding-left:10px; width:180px; }
-      .stake-liability, .stake-matched { text-align:right; padding-right:10px; width:120px; }
+      /* === MAIN CHANGE: force RIGHT alignment for all stake inputs (BACK and LAY) === */
+      .stake-container-back .stake,
+      .stake-liability,
+      .stake-matched,
+      .stake { text-align: right !important; padding-right:10px; }
+      /* labels */
       .stake-label { font-size:12px; color:var(--muted); text-align:center; width:100%; margin-top:4px; }
 
       /* center responsabilidade in surebet tab, and align copy button */
